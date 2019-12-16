@@ -46,6 +46,7 @@ class PostcodeController extends Controller
 
         $postcode = new Postcode();
         $postcode->postcode = $request->get('postcode');
+        $postcode->city_id = $request->get('city');
         $postcode->save();
 
         return redirect()->back()->with('message', 'Postcode added successfully!');

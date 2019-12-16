@@ -31,4 +31,12 @@ class HomeController extends ParentController
         $posts = Blog::take(2)->get(['title', 'description'])->toArray();
         return view('welcome', compact('blogs'));
     }
+    public function showAboutPage()
+    {
+        return view('components.about');
+    }
+    public function showTeamPage()
+    {
+        return view('team');
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Service;
+use App\Postcode;
+use App\ServicePostcode;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -16,7 +18,8 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all();
-        return view('admin.services.index', compact('services'));
+        $postcodes= Postcode::all();
+        return view('admin.services.index', compact('services','postcodes'));
     }
 
     /**
@@ -27,6 +30,7 @@ class ServiceController extends Controller
     public function create()
     {
         //
+        return view('admin.services.create');
     }
 
     /**
@@ -38,8 +42,19 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            ''
+            'value' => 'required',
+            'description' => 'required',
+            'price' => 'required'
         ]);
+        $visibility = $request->get('visibility') ? 1 : 0;
+        $service = new Service();
+        $service->value = $request->get('value');
+        $service->frontend_visibility = $visibility;
+        $service->description = $request->get('description');
+        $service->price = $request->get('price');
+        $service->save();
+        $service->postcodes()->sync($request->get('postcodes'));
+        return redirect()->back()->with('message', 'Service added successfully!');
     }
 
     /**
@@ -59,9 +74,14 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Service $service)
+    { 
+        $postcodes= Postcode::all();
+        $selectedPostcodes = $service->postcodes()->pluck("id")->toArray();
+        if (!$service) {
+            return redirect()->back()->with('message', 'The requested service does not exist.');
+        }
+        return view('admin.services.edit', compact('service','postcodes','selectedPostcodes'));
     }
 
     /**
@@ -71,9 +91,24 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Service $service)
     {
-        //
+        if (!$service) {
+            return redirect()->back()->with('message', 'The requested service does not exist.');
+        }
+        $this->validate($request, [
+            'value' => 'required',
+            'description' => 'required',
+            'price' => 'required'
+        ]);
+        $visibility = $request->get('visibility') ? 1 : 0;
+        $service->value = $request->get('value');
+        $service->frontend_visibility = $visibility;
+        $service->description = $request->get('description');
+        $service->price = $request->get('price');
+        $service->save();
+        $service->postcodes()->sync($request->get('postcodes'));
+        return redirect()->back()->with('message', 'Update successful');
     }
 
     /**
@@ -82,8 +117,13 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Service $service)
     {
-        //
+        if (!$service) {
+            return redirect()->back()->with('message', 'The service does not exist!');
+        }
+
+        $service->delete();
+        return redirect()->action('Admin\ServiceController@index')->with('message', 'service deleted successfully!');
     }
 }
