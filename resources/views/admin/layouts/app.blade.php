@@ -43,6 +43,8 @@
 
     <!-- Toastr -->
     <script src="{{ asset('/js/plugins/toastr/toastr.min.js') }}"></script>
+
+    @yield('scripts')
 </body>
 
 </html>
