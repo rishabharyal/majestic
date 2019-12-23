@@ -30,4 +30,6 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')->group(static fun
     Route::resource('city', 'CityController');
     Route::resource('setting', 'SettingController');
     Route::resource('service', 'ServiceController');
+    Route::resource('portfolio', 'PortfolioController');
+    Route::resource('blog', 'BlogController');
 });

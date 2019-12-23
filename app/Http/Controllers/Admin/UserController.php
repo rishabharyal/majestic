@@ -17,12 +17,10 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = new User();
-
         if ($request->get('search')) {
             $users = $users->where('name', $request->get('search'));
         }
         $users = $users->get();
-
         return view('admin.users.index', compact('users'));
     }
 
@@ -33,7 +31,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -44,7 +41,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|unique:users,email',
+            'role' => 'required',
+        ]);
+        $user = new User();
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        if(strlen($request->get('password'))){
+            $user->password = bcrypt($request->get('password'));
+        }
+        $user->save();
+        
+        $user->assignRole($request->get('role'));
+        return redirect()->back()->with('success', 'New User Created Successfully');
     }
 
     /**
@@ -66,7 +77,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $selectedRole = $user->roles()->pluck('name')->toArray()[0] ?? '';
+        return view('admin.users.edit',compact('user','selectedRole'));
     }
 
     /**
@@ -78,7 +90,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->all());
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|unique:users,email,'.$id,
+            'role' => 'required',
+        ]);
+        $user = User::findOrFail($id);
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        if(strlen($request->get('password'))){
+            $user->password = bcrypt($request->get('password'));
+        }
+        $user->save();
+        $user->assignRole($request->get('role'));
+        return redirect()->back()->with('success', 'User Edited Successfully');
     }
 
     /**
@@ -90,11 +115,11 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if (!$user) {
-            return redirect()->back()->with('message', 'The user you wanted to delete does not exist.');
+            return redirect()->back()->with('warning', 'The user you wanted to delete does not exist.');
         }
 
         $user->delete();
-        return redirect()->action('Admin\UserController@index')->with('message', 'The user you wanted to delete does not exist.');
+        return redirect()->action('Admin\UserController@index')->with('success', 'The user has been deleted successfully');
     }
 
     /**

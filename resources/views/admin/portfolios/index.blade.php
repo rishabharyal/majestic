@@ -5,7 +5,7 @@
 		<div class="col-lg-12">
 			<div class="ibox collapsed">
                 <div class="ibox-title">
-                    <h5>Add a New City</h5>
+                    <h5>Add a New Portfolio</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -13,18 +13,30 @@
                     </div>
                 </div>
                 <div class="ibox-content" style="display: none;">
-                	<form action="{{ action('Admin\CityController@store') }}" method="post">
+                	<form action="{{ action('Admin\PortfolioController@store') }}" method="post">
                 		@csrf
                 		<div class="row">
 	                		<div class="col-md-3 col-sm-12">
 	                			<div class="form-group">
-	                				<label for="city">City</label>
-	                				<input type="text" name="city" id="city" placeholder="" class="form-control">
+	                				<label for="name">Name</label>
+	                				<input type="text" name="name" id="name" placeholder="" class="form-control">
+	                			</div>
+	                		</div>
+	                		<div class="col-md-3 col-sm-12">
+	                			<div class="form-group">
+	                				<label for="designation">Designation</label>
+	                				<input type="text" name="designation" id="designation" placeholder="" class="form-control">
+	                			</div>
+	                		</div>
+	                		<div class="col-md-3 col-sm-12">
+	                			<div class="form-group">
+	                				<label for="description">Description</label>
+	                				<input type="text" name="description" id="description" placeholder="" class="form-control">
 	                			</div>
 	                		</div>
 	                		<div class="col-md-12 col-sm-12 text-left">
 	                			<div class="form-group">
-	                				<button class="btn btn-primary">Add City</button>
+	                				<button class="btn btn-primary">Add Portfolio</button>
 	                			</div>
 	                		</div>
 	                	</div>
@@ -35,7 +47,7 @@
         <div class="col-lg-12">
         	<div class="ibox ">
                 <div class="ibox-title">
-                    <h5>All Cities</h5>
+                    <h5>All Portfolios</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -48,20 +60,23 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Value</th>
-                            <th>Actions</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Description</th>
                         </tr>
                         </thead>
                         <tbody>
-                            @foreach($cities as $key=>$city)
+                            @foreach($portfolios as $key=>$portfolio)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{ $city->city }}</td>
+                                    <td>{{ $portfolio->name }}</td>
+                                    <td>{{ $portfolio->designation }}</td>
+                                    <td>{{ $portfolio->description }}</td>
                                     <th>
-                                        <form action="{{ action('Admin\CityController@destroy', $city->id) }}" method="POST">
+                                        <form action="{{ action('Admin\PortfolioController@destroy', $portfolio->id) }}" method="POST">
                                             @method('DELETE')
                                             @csrf
-                                            <a title="Edit This City" href="{{ action('Admin\CityController@edit', $city->id) }}" class="btn btn-info">
+                                            <a title="Edit This Portfolio" href="{{ action('Admin\PortfolioController@edit', $portfolio->id) }}" class="btn btn-info">
                                                 <span class="fa fa-edit"></span> Edit 
                                             </a>
                                             <button class="btn btn-danger"><span class="fa fa-trash"></span> Delete</button>

@@ -2,13 +2,6 @@
 
 @section('content')
 	<div class="row">
-        @if(Session::has('message'))
-            <div class="col-lg-12">
-                <div class="alert alert-info">
-                    {{ Session::get('message') }}
-                </div>  
-            </div>
-        @endif
 		<div class="col-lg-12">
 			<div class="ibox">
                 <div class="ibox-title">
@@ -49,7 +42,7 @@
                                         <option value="{{$postcode->id}}" {{ in_array($postcode->id,$selectedPostcodes) ? 'Selected':''}} >{{$postcode->postcode}}</option>         
                                     @endforeach
                                 </select>
-                            </div>''
+                            </div>
                             <div class="col-md-12 col-sm-12">
                                 <div class="form-group">
                                     <div class="form-check">

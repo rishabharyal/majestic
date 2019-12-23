@@ -30,6 +30,12 @@
             <li {{ (Request::is('admin/service*') ? 'class=active' : '') }}>
                 <a href="{{ action('Admin\ServiceController@index') }}"><i class="fa fa-life-ring"></i> <span class="nav-label">Services</span></a>
             </li>
+            <li {{ (Request::is('admin/portfolio*') ? 'class=active' : '') }}>
+                <a href="{{ action('Admin\PortfolioController@index') }}"><i class="fa fa-user"></i> <span class="nav-label">Portfolios</span></a>
+            </li>
+            <li {{ (Request::is('admin/blog*') ? 'class=active' : '') }}>
+                <a href="{{ action('Admin\BlogController@index') }}"><i class="fa fa-file"></i> <span class="nav-label">Blogs</span></a>
+            </li>
         </ul>
 
     </div>

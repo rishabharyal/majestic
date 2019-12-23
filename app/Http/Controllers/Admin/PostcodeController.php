@@ -49,7 +49,7 @@ class PostcodeController extends Controller
         $postcode->city_id = $request->get('city');
         $postcode->save();
 
-        return redirect()->back()->with('message', 'Postcode added successfully!');
+        return redirect()->back()->with('success', 'Postcode added successfully!');
 
     }
 
@@ -73,7 +73,7 @@ class PostcodeController extends Controller
     public function edit(Postcode $postcode)
     {
         if (!$postcode) {
-            return redirect()->back()->with('message', 'The requested postcode does not exist.');
+            return redirect()->back()->with('warning', 'The requested postcode does not exist.');
         }
 
         return view('admin.postcode.edit', compact('postcode'));
@@ -89,13 +89,13 @@ class PostcodeController extends Controller
     public function update(Request $request, Postcode $postcode)
     {
         if (!$postcode) {
-            return redirect()->back()->with('message', 'The requested postcode does not exist.');
+            return redirect()->back()->with('warning', 'The requested postcode does not exist.');
         }
 
         $postcode->postcode = $request->get('postcode');
         $postcode->save();
 
-        return redirect()->back()->with('message', 'Update successful');
+        return redirect()->back()->with('success', 'Update successful');
     }
 
     /**
@@ -107,10 +107,10 @@ class PostcodeController extends Controller
     public function destroy(Postcode $postcode)
     {
         if (!$postcode) {
-            return redirect()->back()->with('message', 'The postcode does not exist!');
+            return redirect()->back()->with('warning', 'The postcode does not exist!');
         }
 
         $postcode->delete();
-        return redirect()->action('Admin\PostcodeController@index')->with('message', 'Postcode deleted successfully!');
+        return redirect()->action('Admin\PostcodeController@index')->with('success', 'Postcode deleted successfully!');
     }
 }

@@ -54,7 +54,7 @@ class ServiceController extends Controller
         $service->price = $request->get('price');
         $service->save();
         $service->postcodes()->sync($request->get('postcodes'));
-        return redirect()->back()->with('message', 'Service added successfully!');
+        return redirect()->back()->with('success', 'Service added successfully!');
     }
 
     /**
@@ -79,7 +79,7 @@ class ServiceController extends Controller
         $postcodes= Postcode::all();
         $selectedPostcodes = $service->postcodes()->pluck("id")->toArray();
         if (!$service) {
-            return redirect()->back()->with('message', 'The requested service does not exist.');
+            return redirect()->back()->with('success', 'The requested service does not exist.');
         }
         return view('admin.services.edit', compact('service','postcodes','selectedPostcodes'));
     }
@@ -94,7 +94,7 @@ class ServiceController extends Controller
     public function update(Request $request, Service $service)
     {
         if (!$service) {
-            return redirect()->back()->with('message', 'The requested service does not exist.');
+            return redirect()->back()->with('warning', 'The requested service does not exist.');
         }
         $this->validate($request, [
             'value' => 'required',
@@ -108,7 +108,7 @@ class ServiceController extends Controller
         $service->price = $request->get('price');
         $service->save();
         $service->postcodes()->sync($request->get('postcodes'));
-        return redirect()->back()->with('message', 'Update successful');
+        return redirect()->back()->with('success', 'Service updated successfully');
     }
 
     /**
@@ -120,10 +120,10 @@ class ServiceController extends Controller
     public function destroy(Service $service)
     {
         if (!$service) {
-            return redirect()->back()->with('message', 'The service does not exist!');
+            return redirect()->back()->with('warning', 'The service does not exist!');
         }
 
         $service->delete();
-        return redirect()->action('Admin\ServiceController@index')->with('message', 'service deleted successfully!');
+        return redirect()->action('Admin\ServiceController@index')->with('success', 'service deleted successfully!');
     }
 }

@@ -62,13 +62,6 @@
                 </div>
             </div>
         </div>
-        @if(Session::has('message'))
-            <div class="col-lg-12">
-                <div class="alert alert-info">
-                    {{ Session::get('message') }}
-                </div>  
-            </div>
-        @endif
         <div class="col-lg-12">
         	<div class="ibox ">
                 <div class="ibox-title">
@@ -98,7 +91,7 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $services->value }}</td>
                                     <td>{{ $services->description }}</td>
-                                    <td>{{ $services->frontend_visibility }}</td>
+                                    <td>{{ $services->frontend_visibility?'Yes':'No' }}</td>
                                     <td>{{ $services->price }}</td>
                                     <td>
                                         @foreach ($services->postcodes as $postcode)

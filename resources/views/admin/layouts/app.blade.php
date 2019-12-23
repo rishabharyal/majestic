@@ -12,12 +12,17 @@
     <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
-    <!-- Toastr style -->
     <link href="{{ asset('/css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-
+    <style> 
+        #toast-container { 
+            margin-top: 10px !important; 
+        } 
+    </style>
+    
+    @yield("css")
 </head>
 
 <body>
@@ -43,6 +48,39 @@
 
     <!-- Toastr -->
     <script src="{{ asset('/js/plugins/toastr/toastr.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            toastr.options = {
+                "positionClass" : "toast-top-center",
+                "closeButton" : true,
+                "debug" : false,
+                "newestOnTop" : true,
+                "progressBar" : true,
+                "preventDuplicates" : false,
+                "onclick" : null,
+                "showDuration" : "300",
+                "hideDuration" : "1000",
+                "timeOut" : "5000",
+                "extendedTimeOut" : "1000",
+                "showEasing" : "swing",
+                "hideEasing" : "linear",
+                "showMethod" : "fadeIn",
+                "hideMethod" : "fadeOut"
+            }
+
+            @if(Session::has('success'))
+                toastr['success']("{{ Session::get('success') }}")
+            @endif
+            @if(Session::has('warning'))
+                toastr['warning']("{{ Session::get('warning') }}")
+            @endif
+            @if(Session::has('error'))
+                toastr['error']("{{ Session::get('error') }}")
+            @endif
+        });
+    </script>   
 
     @yield('scripts')
 </body>

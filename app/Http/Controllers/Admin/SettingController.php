@@ -47,7 +47,7 @@ class SettingController extends Controller
         $setting->value = $request->get('value');
         $setting->save();
 
-        return redirect()->back()->with('message', 'Setting key and value added successfully!');
+        return redirect()->back()->with('success', 'Setting key and value added successfully!');
 
     }
 
@@ -70,7 +70,13 @@ class SettingController extends Controller
      */
     public function edit($id)
     {
-        //
+        $setting = Setting::find($id);
+
+        if (!$setting) {
+            return redirect()->back()->with('warning', 'The setting you wanted to edit does not exist!');
+        }
+
+        return view('admin.settings.edit', compact('setting'));
     }
 
     /**
@@ -82,7 +88,17 @@ class SettingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'key' => 'required|unique:settings,key,'.$id,
+            'value' => 'required',
+        ]);
+
+        $setting = Setting::find($id);
+        $setting->key = $request->get('key');
+        $setting->value = $request->get('value');
+        $setting->save();
+
+        return redirect()->back()->with('success', 'Setting key and value added successfully!');
     }
 
     /**
@@ -99,6 +115,6 @@ class SettingController extends Controller
             $setting->delete();
         }
 
-        return redirect()->back()->with('message', 'Setting deleted successfully!');
+        return redirect()->back()->with('success', 'Setting deleted successfully!');
     }
 }

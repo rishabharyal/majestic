@@ -45,7 +45,7 @@ class CityController extends Controller
         $city->city = $request->get('city');
         $city->save();
 
-        return redirect()->back()->with('message', 'City added successfully!');
+        return redirect()->back()->with('success', 'City added successfully!');
 
     }
 
@@ -68,10 +68,10 @@ class CityController extends Controller
      */
     public function edit($id)
     {
-        $city = City::find($city);
+        $city = City::find($id);
 
         if (!$city) {
-            return redirect()->back()->with('message', 'The city you wanted to edit does not exist!');
+            return redirect()->back()->with('warning', 'The city you wanted to edit does not exist!');
         }
 
         return view('admin.city.edit', compact('city'));
@@ -87,10 +87,10 @@ class CityController extends Controller
     public function update(Request $request, $id)
     {
 
-        $city = City::find($city);
+        $city = City::find($id);
 
         if (!$city) {
-            return redirect()->back()->with('message', 'The city you wanted to edit does not exist!');
+            return redirect()->back()->with('warning', 'The city you wanted to edit does not exist!');
         }
 
         $this->validate($request, [
@@ -100,7 +100,7 @@ class CityController extends Controller
         $city->city = $request->get('city');
         $city->save();
 
-        return redirect()->back()->with('message', 'City updated successfully!');
+        return redirect()->back()->with('success', 'City updated successfully!');
     }
 
     /**
@@ -111,6 +111,11 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (!$user) {
+            return redirect()->back()->with('warning', 'The user you wanted to delete does not exist.');
+        }
+
+        $user->delete();
+        return redirect()->action('Admin\UserController@index')->with('success', 'The user has been deleted successfully');
     }
 }

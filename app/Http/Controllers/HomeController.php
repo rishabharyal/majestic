@@ -33,10 +33,14 @@ class HomeController extends ParentController
     }
     public function showAboutPage()
     {
-        return view('components.about');
+        return view('about');
     }
     public function showTeamPage()
     {
         return view('team');
+    }
+    public function showContactPage()
+    {
+        return view('contactus');
     }
 }
