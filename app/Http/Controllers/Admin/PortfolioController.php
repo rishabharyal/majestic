@@ -5,9 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Portfolio;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use MediaUploader; //use the facade 
+use App\Services\Media;
 
 class PortfolioController extends Controller
 {
+
+    private $media;
+
+    public function __construct(Media $media)
+    {
+        $this->media = $media;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +26,7 @@ class PortfolioController extends Controller
     public function index()
     {
         $portfolios = Portfolio::all();
-        return view('admin.portfolios.index',compact('portfolios'));
+        return view('admin.portfolios.index', compact('portfolios'));
     }
 
     /**
@@ -48,6 +58,11 @@ class PortfolioController extends Controller
         $portfolio->description = $request->get('description');
         $portfolio->save();
 
+
+        if ($request->hasFile('image')) {
+            $this->media->attach($portfolio, $request->file('image'), 'portfolio');
+        }
+
         return redirect()->back()->with('success', 'portfolio added successfully!');
     }
 
@@ -70,7 +85,7 @@ class PortfolioController extends Controller
      */
     public function edit(Portfolio $portfolio)
     {
-        return view('admin.portfolios.edit',compact('portfolio'));
+        return view('admin.portfolios.edit', compact('portfolio'));
     }
 
     /**
@@ -93,6 +108,11 @@ class PortfolioController extends Controller
         $portfolio->description = $request->get('description');
         $portfolio->save();
 
+        if ($request->hasFile('image')) {
+            $this->media->delete($portfolio);
+            $this->media->attach($portfolio, $request->file('image'), 'portfolio');
+        }
+
         return redirect()->back()->with('success', 'portfolio updated successfully!');
     }
 
@@ -110,5 +130,17 @@ class PortfolioController extends Controller
 
         $portfolio->delete();
         return redirect()->action('Admin\PortfolioController@index')->with('success', 'The portfolio has been deleted successfully');
+    }
+
+    public function deleteMedia(Request $request, $id)
+    {
+        $portfolio = Portfolio::find($id);
+        if (!$portfolio) {
+            return redirect()->action("Admin\PortfolioController@index")->with('warning', 'The portfolio does not exist!');
+        }
+
+        $this->media->delete($portfolio);
+
+        return redirect()->back()->with('success', 'The image has been deleted successfully!');
     }
 }

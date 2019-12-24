@@ -22,12 +22,15 @@ Route::get('/blog/{id}', 'HomeController@show');
 Route::get('/contact-us', 'HomeController@showContactPage');
 Route::get('/about', 'HomeController@showAboutPage');
 
-Route::prefix('admin')->namespace('Admin')->middleware('auth')->group(static function() {
+Route::prefix('admin')->namespace('Admin')->middleware('auth')->group(static function () {
     Route::resource('/', 'DashboardController');
     Route::get('user/{id}/suspend', 'UserController@suspend');
     Route::resource('users', 'UserController');
     Route::resource('postcode', 'PostcodeController');
     Route::resource('city', 'CityController');
+    Route::delete('service/media/{id}', 'ServiceController@deleteMedia');
+    Route::delete('portfolio/media/{id}', 'PortfolioController@deleteMedia');
+    Route::delete('blog/media/{id}', 'BlogController@deleteMedia');
     Route::resource('setting', 'SettingController');
     Route::resource('service', 'ServiceController');
     Route::resource('portfolio', 'PortfolioController');

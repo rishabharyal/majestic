@@ -16,12 +16,12 @@
 
     <link href="{{ asset('/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <style> 
-        #toast-container { 
-            margin-top: 10px !important; 
-        } 
+    <style>
+        #toast-container {
+            margin-top: 10px !important;
+        }
     </style>
-    
+
     @yield("css")
 </head>
 
@@ -80,7 +80,7 @@
                 toastr['error']("{{ Session::get('error') }}")
             @endif
         });
-    </script>   
+    </script>
 
     @yield('scripts')
 </body>

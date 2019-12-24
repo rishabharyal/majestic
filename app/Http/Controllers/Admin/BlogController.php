@@ -5,9 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Blog;
+use MediaUploader; //use the facade 
+use App\Services\Media;
 
 class BlogController extends Controller
 {
+
+    private $media;
+
+    public function __construct(Media $media)
+    {
+        $this->media = $media;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +26,7 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::all();
-        return view('admin.blogs.index',compact('blogs'));
+        return view('admin.blogs.index', compact('blogs'));
     }
 
     /**
@@ -37,18 +47,23 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-     $this->validate($request, [
+        $this->validate($request, [
             'title' => 'required',
-            'description'=>'required',
+            'description' => 'required',
+            'slug' => 'required|unique:blogs,slug',
         ]);
         $visibility = $request->get('visibility') ? 1 : 0;
         $blog = new Blog();
         $blog->title = $request->get('title');
+        $blog->slug = $request->get('slug');
         $blog->description = $request->get('description');
         $blog->frontend_visibility = $visibility;
         $blog->save();
 
-        return redirect()->back()->with('success', 'Blog added successfully!'); 
+        if ($request->hasFile('image')) {
+            $this->media->attach($blog, $request->file('image'), 'blog');
+        }
+        return redirect()->back()->with('success', 'Blog added successfully!');
     }
 
     /**
@@ -70,7 +85,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        return view('admin.blogs.edit',compact('blog'));
+        return view('admin.blogs.edit', compact('blog'));
     }
 
     /**
@@ -80,19 +95,28 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Blog $blog)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'title' => 'required',
-            'description'=>'required',
+            'description' => 'required',
+            'slug' => 'required|unique:blogs,slug,' . $id,
         ]);
+        $blog = Blog::find($id);
         $visibility = $request->get('visibility') ? 1 : 0;
         $blog->title = $request->get('title');
+        $blog->slug = $request->get('slug');
         $blog->description = $request->get('description');
         $blog->frontend_visibility = $visibility;
         $blog->save();
 
-        return redirect()->back()->with('success', 'Blog added successfully!'); 
+
+        if ($request->hasFile('image')) {
+            $this->media->delete($blog);
+            $this->media->attach($blog, $request->file('image'), 'blog');
+        }
+
+        return redirect()->back()->with('success', 'Blog added successfully!');
     }
 
     /**
@@ -109,5 +133,16 @@ class BlogController extends Controller
 
         $blog->delete();
         return redirect()->action('Admin\BlogController@index')->with('success', 'blog deleted successfully!');
+    }
+    public function deleteMedia(Request $request, $id)
+    {
+        $blog = Blog::find($id);
+        if (!$blog) {
+            return redirect()->action("Admin\BlogController@index")->with('warning', 'The blog does not exist!');
+        }
+
+        $this->media->delete($blog);
+
+        return redirect()->back()->with('success', 'The image has been deleted successfully!');
     }
 }

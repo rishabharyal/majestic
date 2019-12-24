@@ -49,11 +49,11 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
-        if(strlen($request->get('password'))){
+        if (strlen($request->get('password'))) {
             $user->password = bcrypt($request->get('password'));
         }
         $user->save();
-        
+
         $user->assignRole($request->get('role'));
         return redirect()->back()->with('success', 'New User Created Successfully');
     }
@@ -78,7 +78,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $selectedRole = $user->roles()->pluck('name')->toArray()[0] ?? '';
-        return view('admin.users.edit',compact('user','selectedRole'));
+        return view('admin.users.edit', compact('user', 'selectedRole'));
     }
 
     /**
@@ -92,13 +92,13 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|unique:users,email,'.$id,
+            'email' => 'required|unique:users,email,' . $id,
             'role' => 'required',
         ]);
         $user = User::findOrFail($id);
         $user->name = $request->get('name');
         $user->email = $request->get('email');
-        if(strlen($request->get('password'))){
+        if (strlen($request->get('password'))) {
             $user->password = bcrypt($request->get('password'));
         }
         $user->save();
@@ -123,16 +123,16 @@ class UserController extends Controller
     }
 
     /**
-    * Suspend or un-susped the user
-    *
-    * @param $id
-    *
-    */
+     * Suspend or un-susped the user
+     *
+     * @param $id
+     *
+     */
 
     public function suspend($id)
     {
         $user = User::find($id);
-        if (!$user){
+        if (!$user) {
             return redirect()->back()->with('warning', 'The user you wanted to suspend does not exist.');
         }
 
@@ -140,6 +140,5 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'The user is now suspended. This user won\'t be able to login anymore.');
-
     }
 }

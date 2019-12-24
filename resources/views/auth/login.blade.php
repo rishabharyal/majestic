@@ -11,7 +11,7 @@
                             <img src="images/logo.png">
                         </div>
                         <span class="mj-modelspan">
-                            Connect with majestic cleaning pros for better cleaning services 
+                            Connect with majestic cleaning pros for better cleaning services
                         </span>
                     </div>
                     <div class="mj-model-bdy">
@@ -38,10 +38,11 @@
                         <div class="mj-model-footer">
                             <div class="mj-pvc-p">
                                 <a href="{{ route('password.request') }}" class="mj-fpanchor">Forgot Password?</a>
-                                
+
                             </div>
                             <div class="mj-anchorfooter">
-                                <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signupmodel">I dont have account | Signup</a>
+                                <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signupmodel">I dont
+                                    have account | Signup</a>
                             </div>
                         </div>
                     </div>
