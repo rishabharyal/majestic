@@ -88,7 +88,8 @@
                             <div class="form-group">
                                 <label>Images</label>
                                 <div class="custom-file">
-                                    <input id="images" type="file" name="image" class="custom-file-input">
+                                    <input multiple id="images" type="file" name="image[]" class="custom-file-input"
+                                        accept="image/x-png,image/gif,image/jpeg">
                                     <label for="images" class="custom-file-label">Choose Images</label>
                                 </div>
                             </div>
@@ -99,6 +100,16 @@
                                     <input class="form-check-input" type="checkbox" id="visibility" name="visibility">
                                     <label class="form-check-label" for="visibility">
                                         Frontend Visibility
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="is_post" name="is_post">
+                                    <label class="form-check-label" for="is_post">
+                                        Is Post
                                     </label>
                                 </div>
                             </div>
@@ -134,6 +145,7 @@
                             <th>Slug</th>
                             <th>Images</th>
                             <th>Frontend Visibility</th>
+                            <th>Is Post</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -151,6 +163,7 @@
                                 @endif
                             </td>
                             <td>{{ $blog->frontend_visibility?'Yes':'No' }}</td>
+                            <td>{{ $blog->is_post?'Yes':'No' }}</td>
                             <th>
                                 <form action="{{ action('Admin\BlogController@destroy', $blog->id) }}" method="POST">
                                     @csrf
@@ -197,7 +210,7 @@
         targetInput.val(targetDiv.children[0].innerHTML);
     })
     $("#title").keyup((e)=>{
-        $("#slug").val($("#title").val().replace(/ /g,"-"))
+        $("#slug").val($("#title").val().trim().replace(/ /g,"-"))
     })
 </script>
 <script>

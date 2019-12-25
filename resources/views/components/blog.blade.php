@@ -8,11 +8,14 @@
 			</div>
 			<div class="mj-inside-bdy row">
 				@foreach($blogs as $blog)
-					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
-						<a href="#"></a>
-						<div class="mg-blog-card"><a href="#">
-							<img src="images/Furniture.jpg" class="img-fluid">
-							</a><div class="mg-blog-info"><a href="#">
+				<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
+					<a href="#"></a>
+					<div class="mg-blog-card"><a href="#">
+							@if ($blog->hasMedia('default'))
+							<img src="{{ $blog->firstMedia('default')->getUrl()}}" class="img-fluid">
+							@endif
+						</a>
+						<div class="mg-blog-info"><a href="#">
 								<h4>{{ $blog->title }}</h4>
 								<span>
 									{{ $blog->created_at->diffForHumans() }}
@@ -20,10 +23,10 @@
 								<p>
 									{!! $blog->description !!}
 								</p>
-								</a><a href="#"> Read More  &gt;&gt; </a>
-							</div>
+							</a><a href="#"> Read More &gt;&gt; </a>
 						</div>
 					</div>
+				</div>
 				@endforeach
 				<div class="col-12">
 					<a href="/blogs" class="btn mg-btn-primary">

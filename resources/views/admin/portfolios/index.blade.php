@@ -41,7 +41,8 @@
                             <div class="form-group">
                                 <label>Images</label>
                                 <div class="custom-file">
-                                    <input id="images" type="file" name="image" class="custom-file-input">
+                                    <input id="images" type="file" name="image" class="custom-file-input"
+                                        accept="image/x-png,image/gif,image/jpeg">
                                     <label for="images" class="custom-file-label">Choose Images</label>
                                 </div>
                             </div>

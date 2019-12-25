@@ -15,7 +15,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 Route::get('/services', 'HomeController@index');
-Route::get('/service/{id}', 'HomeController@show');
+Route::get('/services/{slug}', 'HomeController@show');
 Route::get('/team', 'HomeController@showTeamPage');
 Route::get('/blog', 'HomeController@index');
 Route::get('/blog/{id}', 'HomeController@show');

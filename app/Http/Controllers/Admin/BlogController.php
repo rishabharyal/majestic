@@ -52,12 +52,12 @@ class BlogController extends Controller
             'description' => 'required',
             'slug' => 'required|unique:blogs,slug',
         ]);
-        $visibility = $request->get('visibility') ? 1 : 0;
         $blog = new Blog();
+        $blog->frontend_visibility = $request->get('visibility') ? 1 : 0;
+        $blog->is_post = $request->get('is_post') ? 1 : 0;
         $blog->title = $request->get('title');
         $blog->slug = $request->get('slug');
         $blog->description = $request->get('description');
-        $blog->frontend_visibility = $visibility;
         $blog->save();
 
         if ($request->hasFile('image')) {
@@ -85,7 +85,8 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        return view('admin.blogs.edit', compact('blog'));
+        $images = $blog->getMedia('default');
+        return view('admin.blogs.edit', compact('blog', 'images'));
     }
 
     /**
@@ -103,16 +104,15 @@ class BlogController extends Controller
             'slug' => 'required|unique:blogs,slug,' . $id,
         ]);
         $blog = Blog::find($id);
-        $visibility = $request->get('visibility') ? 1 : 0;
         $blog->title = $request->get('title');
         $blog->slug = $request->get('slug');
         $blog->description = $request->get('description');
-        $blog->frontend_visibility = $visibility;
+        $blog->frontend_visibility = $request->get('visibility') ? 1 : 0;
+        $blog->is_post = $request->get('is_post') ? 1 : 0;
         $blog->save();
 
 
         if ($request->hasFile('image')) {
-            $this->media->delete($blog);
             $this->media->attach($blog, $request->file('image'), 'blog');
         }
 
@@ -136,12 +136,13 @@ class BlogController extends Controller
     }
     public function deleteMedia(Request $request, $id)
     {
+        $image_id = $request->get('image_id');
         $blog = Blog::find($id);
         if (!$blog) {
             return redirect()->action("Admin\BlogController@index")->with('warning', 'The blog does not exist!');
         }
 
-        $this->media->delete($blog);
+        $this->media->delete($blog, $image_id);
 
         return redirect()->back()->with('success', 'The image has been deleted successfully!');
     }

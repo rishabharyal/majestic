@@ -92,7 +92,8 @@
               <div class="form-group">
                 <label>Images</label>
                 <div class="custom-file">
-                  <input id="images" type="file" name="image" class="custom-file-input">
+                  <input id="images" type="file" name="image" class="custom-file-input"
+                    accept="image/x-png,image/gif,image/jpeg">
                   <label for="images" class="custom-file-label">Choose Images</label>
                 </div>
               </div>
@@ -104,6 +105,17 @@
                     id="visibility" name="visibility">
                   <label class="form-check-label" for="visibility">
                     Frontend Visibility
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+              <div class="form-group">
+                <div class="form-check">
+                  <input {{$blog->is_post? 'checked': ''}} class="form-check-input" type="checkbox" id="is_post"
+                    name="is_post">
+                  <label class="form-check-label" for="is_post">
+                    Is Post
                   </label>
                 </div>
               </div>
@@ -122,15 +134,17 @@
           <div class="mail-box clearfix">
             <div class="mail-attachment">
               <div class="attachment">
+                @foreach ($images as $image)
                 <div class="file-box">
                   <div class="file">
                     <a href="#">
                       <span class="corner"></span>
 
                       <div class="image">
-                        <a href="{{ $blog->firstMedia('default')->getUrl()}}" target="_new"><img
-                            src="{{ $blog->firstMedia('default')->getUrl()}}" alt="{{ $blog->value }}"
-                            class="img-fluid"></a>
+                        <a href="{{ $image->getUrl()}}" target="_new">
+                          <img src="{{ $image->getUrl()}}" alt="{{ $blog->value }}" class="img-fluid">
+                          <input type="hidden" name='image_id' value="{{ $image->id}}">
+                        </a>
                       </div>
                       <div class="file-name">
                         <button class="btn btn-danger"> Delete image</button>
@@ -138,6 +152,7 @@
                     </a>
                   </div>
                 </div>
+                @endforeach
               </div>
             </div>
           </div>
@@ -170,7 +185,7 @@
             targetInput.val(targetDiv.children[0].innerHTML);
         })
         $("#title").keyup((e)=>{
-          $("#slug").val($("#title").val().replace(/ /g,"-"))
+          $("#slug").val($("#title").val().trim().replace(/ /g,"-"))
         })
 </script>
 <script>

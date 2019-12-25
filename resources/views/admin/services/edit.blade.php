@@ -43,7 +43,8 @@
                             <div class="form-group">
                                 <label>Image</label>
                                 <div class="custom-file">
-                                    <input id="images" type="file" name="image" class="custom-file-input">
+                                    <input id="images" type="file" name="image" class="custom-file-input"
+                                        accept="image/x-png,image/gif,image/jpeg">
                                     <label for="images" class="custom-file-label">Choose Image</label>
                                 </div>
                             </div>
@@ -127,7 +128,7 @@
         $('.select2').select2();
     });
     $("#value").keyup((e)=>{
-        $("#slug").val($("#value").val().replace(/ /g,"-"))
+        $("#slug").val($("#value").val().trim().replace(/ /g,"-"))
     })
     $('.custom-file-input').on('change', function() {
         let fileName = $(this).val().split('\\').pop();

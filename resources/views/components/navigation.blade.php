@@ -1,25 +1,28 @@
 <section class="mj-nav-section clearfix">
 	<div class="mj-nav-container clearfix">
-		<nav class="navbar navbar-expand-lg navbar-light" data-spy="affix" data-offset-top="205" id="mj_nav"> <!-- fixed-top -->
+		<nav class="navbar navbar-expand-lg navbar-light" data-spy="affix" data-offset-top="205" id="mj_nav">
+			<!-- fixed-top -->
 			<div class="nav-bdy-content">
-		  		<div class="nav-container-logo navbar-nav mr-auto ">
-		  			<a href="/" class="logo-container-anchor">
-		  				<img src="images/logo.png">
-		  			</a>
-		  		</div>
-		  		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-		    		<span class="navbar-toggler-icon"></span>
-		  		</button>
-		  		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-				    <ul class="navbar-nav ml-auto">
+				<div class="nav-container-logo navbar-nav mr-auto ">
+					<a href="/" class="logo-container-anchor">
+						<img src="images/logo.png">
+					</a>
+				</div>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+					aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNavDropdown">
+					<ul class="navbar-nav ml-auto">
 						<li class="nav-item active">
-							<a class="nav-link nav-link-a nav-cont active" href="/">Home <span class="sr-only">(current)</span></a>
+							<a class="nav-link nav-link-a nav-cont active" href="/">Home <span
+									class="sr-only">(current)</span></a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link nav-link-a nav-cont dropdown-toggle" href="/services">Services</a>
 							<div class="Secondary-nav">
 								@foreach ($services as $service)
-									<a class="dropdown-item" href="#">{{ $service->value }}</a>
+								<a class="dropdown-item" href="/services/{{ $service->slug }}">{{ $service->value }}</a>
 								@endforeach
 							</div>
 						</li>
@@ -38,27 +41,33 @@
 							<a class="nav-link nav-link-a btn nav-btn" href="#">Book Online</a>
 						</li>
 						@if(Auth::user())
-							<li class="nav-item">
-								<a class="nav-link nav-link-a nav-cont dropdown-toggle" href="#">{{ Auth::user()->name }}</a>
-								<div class="Secondary-nav">
-									<a class="dropdown-item" onclick="event.preventDefault();document.getElementById('logoutForm').submit();">Log Out</a>
-								</div>
-							</li>
-							@include('forms.logout')
+						<li class="nav-item">
+							<a class="nav-link nav-link-a nav-cont dropdown-toggle"
+								href="#">{{ Auth::user()->name }}</a>
+							<div class="Secondary-nav">
+								<a class="dropdown-item"
+									onclick="event.preventDefault();document.getElementById('logoutForm').submit();">Log
+									Out</a>
+							</div>
+						</li>
+						@include('forms.logout')
 						@else
-							<li class="nav-item ">
-								<a class="nav-link nav-link-a nav-login" href="#" data-toggle="modal" data-target="#Loginmodel">Login</a>
-							</li>
-							<li class="nav-item ">
-								<a class="nav-link nav-link-a nav-signup" href="#" data-toggle="modal" data-target="#signupmodel">Sign Up</a>
-							</li>
+						<li class="nav-item ">
+							<a class="nav-link nav-link-a nav-login" href="#" data-toggle="modal"
+								data-target="#Loginmodel">Login</a>
+						</li>
+						<li class="nav-item ">
+							<a class="nav-link nav-link-a nav-signup" href="#" data-toggle="modal"
+								data-target="#signupmodel">Sign Up</a>
+						</li>
 						@endif
 					</ul>
-			  	</div>
+				</div>
 			</div>
 		</nav>
 		<!--Login  Modal -->
-		<div class="modal  fade mg-model " id="Loginmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal  fade mg-model " id="Loginmodel" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-body">
@@ -70,7 +79,7 @@
 								<img src="images/logo.png">
 							</div>
 							<span class="mj-modelspan">
-								Connect with majestic cleaning pros for better cleaning services 
+								Connect with majestic cleaning pros for better cleaning services
 							</span>
 						</div>
 						<div class="mj-model-bdy">
@@ -97,7 +106,8 @@
 										<input type="email" name="email" class="mj-model-input" placeholder="Email">
 									</div>
 									<div class="col-12">
-										<input type="Password" name="password" class="mj-model-input" placeholder="Password">
+										<input type="Password" name="password" class="mj-model-input"
+											placeholder="Password">
 									</div>
 									<div class="col-12">
 										<a href="#" class="btn mg-btn-primary mj-modelbtn">Log In</a>
@@ -107,10 +117,11 @@
 							<div class="mj-model-footer">
 								<div class="mj-pvc-p">
 									<a href="#" class="mj-fpanchor">Forgot Password?</a>
-									
+
 								</div>
 								<div class="mj-anchorfooter">
-									<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signupmodel">I dont have account | Signup</a>
+									<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signupmodel">I
+										dont have account | Signup</a>
 								</div>
 							</div>
 						</div>
@@ -118,7 +129,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade mg-model" id="signupmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade mg-model" id="signupmodel" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-body">
@@ -130,7 +142,7 @@
 								<img src="images/logo.png">
 							</div>
 							<span class="mj-modelspan">
-								Connect with majestic cleaning pros for better cleaning services 
+								Connect with majestic cleaning pros for better cleaning services
 							</span>
 						</div>
 						<div class="mj-model-bdy">
@@ -163,7 +175,8 @@
 										<input type="email" name="email" class="mj-model-input" placeholder="Email">
 									</div>
 									<div class="col-12">
-										<input type="Password" name="password" class="mj-model-input" placeholder="Password">
+										<input type="Password" name="password" class="mj-model-input"
+											placeholder="Password">
 									</div>
 									<div class="col-12">
 										<a href="#" class="btn mg-btn-primary mj-modelbtn">Sign Up</a>
@@ -174,14 +187,15 @@
 								<div class="mj-pvc-p">
 									<!-- <a href="#" class="mj-fpanchor">Forgot Password?</a> -->
 									<p>
-										By signing up, you agree to Classmonks 
-										<a href="#"> Terms &amp; condition</a> 
-										and 
+										By signing up, you agree to Classmonks
+										<a href="#"> Terms &amp; condition</a>
+										and
 										<a href="#">Privacy Policy</a>
 									</p>
 								</div>
 								<div class="mj-anchorfooter">
-									<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#Loginmodel">I already have an account | login</a>
+									<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#Loginmodel">I
+										already have an account | login</a>
 								</div>
 							</div>
 						</div>
