@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Cleaning;
 use App\Http\Controllers\Controller;
 use App\Identity;
-use App\r;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class SearchController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,20 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.dashboard');
+        $query = '';
+
+        // dd($request->all());
+        $cleanings  = new Cleaning();
+        if ($request->get('search')) {
+            foreach ($request->get('search') as $identityId => $quantity) {
+                if ($identityId > 0) $query .= ',' . $quantity;
+                else $query .=  $quantity;
+            }
+            $cleanings = $cleanings->where('type', $request->get('type'))->where('search_index', $query)->get();
+        } else
+            $cleanings = [];
+        $identities = Identity::all();
+        return view('admin.quotation.index', compact('identities', 'cleanings'));
     }
 
     /**
@@ -40,17 +52,14 @@ class DashboardController extends Controller
     {
         //
     }
-    public function search(Request $request)
-    {
-    }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\r  $r
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(r $r)
+    public function show($id)
     {
         //
     }
@@ -58,10 +67,10 @@ class DashboardController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\r  $r
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(r $r)
+    public function edit($id)
     {
         //
     }
@@ -70,10 +79,10 @@ class DashboardController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\r  $r
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, r $r)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -81,10 +90,10 @@ class DashboardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\r  $r
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(r $r)
+    public function destroy($id)
     {
         //
     }

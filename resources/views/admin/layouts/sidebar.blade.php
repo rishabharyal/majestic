@@ -17,6 +17,10 @@
                 <a href="{{ action('Admin\DashboardController@index') }}"><i class="fa fa-diamond"></i> <span
                         class="nav-label">Dashboard</span></a>
             </li>
+            <li {{ (Request::is('admin/quotation') ? 'class=active' : '') }}>
+                <a href="{{ action('Admin\SearchController@index') }}"><i class="fa fa-search"></i> <span
+                        class="nav-label">Get Quotation</span></a>
+            </li>
             <li {{ (Request::is('admin/users*') ? 'class=active' : '') }}>
                 <a href="{{ action('Admin\UserController@index') }}"><i class="fa fa-users"></i> <span
                         class="nav-label">Users</span></a>

@@ -24,6 +24,7 @@ Route::get('/about', 'HomeController@showAboutPage');
 
 Route::prefix('admin')->namespace('Admin')->middleware('auth')->group(static function () {
     Route::resource('/', 'DashboardController');
+    Route::get('quotation/', 'SearchController@index');
     Route::get('user/{id}/suspend', 'UserController@suspend');
     Route::resource('users', 'UserController');
     Route::resource('postcode', 'PostcodeController');
