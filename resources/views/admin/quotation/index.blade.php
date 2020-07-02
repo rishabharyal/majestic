@@ -12,28 +12,18 @@
                             <div class="form-group">
                                 <label for="type">Type</label>
                                 <select class="form-control" id="type" name="type" placeholder="Select type">
-                                    <option value="EOL">EOL</option>
-                                    <option value="Regular">Regular Cleaning</option>
+                                    <option {{ $request->get('type') == 'EOL' ? 'selected' : '' }} value="EOL">EOL</option>
+                                    <option {{ $request->get('type') == 'Regular' ? 'selected' : '' }} value="Regular">Regular Cleaning</option>
                                 </select>
                             </div>
                         </div>
-						{{-- <div class="col-md-3 col-sm-12">
-                            <div class="form-group">
-                                <label for="identities">Identities</label>
-                                <select style="width:100%" class="form-control select2" name="identities[]" multiple="multiple">
-                                    @foreach ($intities as $intity)
-                                    <option value="{{ $intity->id }}">{{ $intity->title }}</option>
-                                    @endforeach
-								</select>
-                            </div>
-                        </div> --}}
 						@foreach ($identities as $index=>$identity)
-						<div class="col-md-1 col-sm-12">
-                            <div class="form-group">
-							<label for="{{$identity->id}}">{{$identity->title}}</label>
-							<input type="number" min="0" value="0" name="search[{{$index}}]" id="{{$identity->title}}" class="form-control">
-                            </div>
-                        </div>
+							<div class="col-md-1 col-sm-12">
+	                            <div class="form-group">
+									<label for="{{$identity->id}}">{{$identity->title}}</label>
+									<input type="number" min="0" value="{{ $request->search[$index] ?? (($index == 2 || $index ==3) ? 1 : 0) }}" name="search[{{$index}}]" id="{{$identity->title}}" class="form-control">
+	                            </div>
+	                        </div>
 						@endforeach
 						<div class="col-md-12 col-sm-12 text-left" id="submit">
 							<div class="form-group">
@@ -55,45 +45,49 @@
 					</div>
 				</div>
 				<div class="ibox-content">
-	
-					<table class="table">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Type</th>
-								<th>Code</th>
-								<th>Total Hours</th>
-								<th>Price Per Hour</th>
-								<th>Total Price</th>
-								<th>Rooms</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($cleanings as $key=>$cleaning)
-							<tr>
-								<td>{{ $key + 1 }}</td>
-								<td>{{$cleaning->type}}</td>
-								<td>{{$cleaning->code}}</td>
-								<td>{{$cleaning->total_hours}}</td>
-								<td>{{$cleaning->price_per_hour}}</td>
-								<td>{{$cleaning->total_price}}</td>
-								<td>
-									<table class="table table-striped table-sm">
-										@foreach($cleaning->prices as $price)
-											@if($price->quantity)
-												<tr>
-													<td>{{ $price->identity->title }}</td>
-													<td>{{ $price->quantity }}</td>
-												</tr>
-											@endif
-										@endforeach
-									</table>
-								</td>
-							</tr>
-							@endforeach
-						</tbody>
-					</table>
-	
+					@if($cleanings->count())
+						<table class="table">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Type</th>
+									<th>Code</th>
+									<th>Total Hours</th>
+									<th>Price Per Hour</th>
+									<th>Total Price</th>
+									<th>Rooms</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($cleanings as $key=>$cleaning)
+								<tr>
+									<td>{{ $key + 1 }}</td>
+									<td>{{$cleaning->type}}</td>
+									<td>{{$cleaning->code}}</td>
+									<td>{{$cleaning->total_hours}}</td>
+									<td>{{$cleaning->price_per_hour}}</td>
+									<td>{{$cleaning->total_price}}</td>
+									<td>
+										<table class="table table-striped table-sm">
+											@foreach($cleaning->prices as $price)
+												@if($price->quantity)
+													<tr>
+														<td>{{ $price->identity->title }}</td>
+														<td>{{ $price->quantity }}</td>
+													</tr>
+												@endif
+											@endforeach
+										</table>
+									</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					@else
+						<div class="alert alert-danger">
+							No search results found for the given combination.
+						</div>
+					@endif
 				</div>
 			</div>
 		</div>

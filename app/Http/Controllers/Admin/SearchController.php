@@ -27,9 +27,9 @@ class SearchController extends Controller
             }
             $cleanings = $cleanings->where('type', $request->get('type'))->where('search_index', $query)->get();
         } else
-            $cleanings = [];
+            $cleanings = collect([]);
         $identities = Identity::all();
-        return view('admin.quotation.index', compact('identities', 'cleanings'));
+        return view('admin.quotation.index', compact('identities', 'cleanings', 'request'));
     }
 
     /**
