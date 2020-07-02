@@ -13,6 +13,7 @@
         "laravel/framework": "^6.2",
         "laravel/telescope": "^2.1",
         "laravel/tinker": "^1.0",
+        "maatwebsite/excel": "^3.1",
         "plank/laravel-mediable": "^4.0",
         "spatie/laravel-permission": "^3.2",
         "spatie/laravel-sluggable": "^2.2"

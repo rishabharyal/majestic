@@ -16,7 +16,7 @@ class CreateCleaningsTable extends Migration
         Schema::create('cleanings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('type');
-            $table->string('uid');
+            $table->string('code');
             $table->decimal('total_hours')->default(0);
             $table->decimal('price_per_hour')->default(0);
             $table->decimal('total_price')->default(0);
