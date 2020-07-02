@@ -37,9 +37,9 @@
                 <a href="{{ action('Admin\ServiceController@index') }}"><i class="fa fa-life-ring"></i> <span
                         class="nav-label">Services</span></a>
             </li>
-            <li {{ (Request::is('admin/service*') ? 'class=active' : '') }}>
-                <a href="{{ action('Admin\ServiceController@index') }}"><i class="fa fa-life-ring"></i> <span
-                        class="nav-label">Services</span></a>
+            <li {{ (Request::is('admin/Identities*') ? 'class=active' : '') }}>
+                <a href="{{ action('Admin\IdentityController@index') }}"><i class="fa fa-life-ring"></i> <span
+                        class="nav-label">Identities</span></a>
             </li>
             <li {{ (Request::is('admin/portfolio*') ? 'class=active' : '') }}>
                 <a href="{{ action('Admin\PortfolioController@index') }}"><i class="fa fa-user"></i> <span

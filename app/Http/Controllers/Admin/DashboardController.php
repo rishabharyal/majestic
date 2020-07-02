@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Cleaning;
 use App\Http\Controllers\Controller;
 use App\r;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        // $types = Cleaning::all()->pluck('type')->toArray();
         return view('admin.dashboard');
     }
 

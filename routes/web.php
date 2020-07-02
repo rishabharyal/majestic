@@ -33,6 +33,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')->group(static fun
     Route::delete('blog/media/{id}', 'BlogController@deleteMedia');
     Route::resource('setting', 'SettingController');
     Route::resource('service', 'ServiceController');
+    Route::resource('identities', 'IdentityController');
     Route::resource('portfolio', 'PortfolioController');
     Route::resource('blog', 'BlogController');
 });

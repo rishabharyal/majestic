@@ -42,6 +42,9 @@
     <script src="{{ asset('/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
     <script src="{{ asset('/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
     <!-- Custom and plugin javascript -->
     <script src="/js/inspinia.js"></script>
     <script src="/js/plugins/pace/pace.min.js"></script>
@@ -51,6 +54,8 @@
 
     <script>
         $(document).ready(function() {
+
+            $(".select2").select2();
 
             toastr.options = {
                 "positionClass" : "toast-top-center",

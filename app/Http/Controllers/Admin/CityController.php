@@ -38,7 +38,7 @@ class CityController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'city' => 'required|min:5|unique:cities'
+            'city' => 'required|min:5|unique:cities,city'
         ]);
 
         $city = new City();
@@ -46,7 +46,6 @@ class CityController extends Controller
         $city->save();
 
         return redirect()->back()->with('success', 'City added successfully!');
-
     }
 
     /**
@@ -94,7 +93,7 @@ class CityController extends Controller
         }
 
         $this->validate($request, [
-            'city' => 'required|min:5|unique:cities,city'
+            'city' => 'required|min:5|unique:cities,city,' . $id,
         ]);
 
         $city->city = $request->get('city');
@@ -111,11 +110,12 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        if (!$user) {
-            return redirect()->back()->with('warning', 'The user you wanted to delete does not exist.');
+        $city = City::find($id);
+        if (!$city) {
+            return redirect()->back()->with('warning', 'The City you wanted to delete does not exist.');
         }
 
-        $user->delete();
-        return redirect()->action('Admin\UserController@index')->with('success', 'The user has been deleted successfully');
+        $city->delete();
+        return redirect()->action('Admin\CityController@index')->with('success', 'The City has been deleted successfully');
     }
 }
