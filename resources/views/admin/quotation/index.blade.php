@@ -65,7 +65,7 @@
 								<th>Total Hours</th>
 								<th>Price Per Hour</th>
 								<th>Total Price</th>
-								<th>Description</th>
+								<th>Rooms</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -77,7 +77,17 @@
 								<td>{{$cleaning->total_hours}}</td>
 								<td>{{$cleaning->price_per_hour}}</td>
 								<td>{{$cleaning->total_price}}</td>
-								<td>{{$cleaning->description}}</td>
+								<td>
+									<table class="table table-striped table-sm">
+										{{ dd($cleaning->prices) }}
+										@foreach($cleaning->prices as $price)
+											<tr>
+												<td>{{ $price->identity->name }}</td>
+												<td>{{ $price->quantity }}</td>
+											</tr>
+										@endforeach
+									</table>
+								</td>
 							</tr>
 							@endforeach
 						</tbody>

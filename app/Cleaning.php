@@ -14,4 +14,8 @@ class Cleaning extends Model
     	'total_price',
     	'description'
     ];
+
+    public function prices() {
+    	return $this->hasMany(CleaningIdentities::class);
+    }
 }

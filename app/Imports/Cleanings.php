@@ -100,6 +100,7 @@ class Cleanings implements ToCollection, WithHeadingRow
     	if ($cleaningIdentity) {
     		$cleaningIdentity->quantity = $quantity;
     		$cleaningIdentity->save();
+            return;
     	}
 
     	CleaningIdentities::create([

@@ -11,4 +11,8 @@ class CleaningIdentities extends Model
     	'identity_id',
     	'quantity'
     ];
+
+    public function identity() {
+    	return $this->belongsTo(Identity::class);
+    }
 }
