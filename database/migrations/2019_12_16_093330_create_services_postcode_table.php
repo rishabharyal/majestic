@@ -14,8 +14,8 @@ class CreateServicesPostcodeTable extends Migration
     public function up()
     {
         Schema::create('services_postcode', function (Blueprint $table) {
-            $table->integer('service_id')->unsigned();
-            $table->integer('postcode_id')->unsigned();
+            $table->unsignedBigInteger('service_id');
+            $table->unsignedBigInteger('postcode_id');
             $table->foreign('service_id')->references('id')->on('services');
             $table->foreign('postcode_id')->references('id')->on('postcodes');
         });
