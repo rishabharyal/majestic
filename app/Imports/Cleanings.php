@@ -38,13 +38,38 @@ class Cleanings implements ToCollection, WithHeadingRow
         	unset($cleaning['Total Price']);
 
         	$cleaningId = $this->createCleaning($cleaningData);
+        	$searchTerm = '';
 
         	dump('Importing ' . $cleaningData['code']);
         	foreach($cleaning as $identity => $quantity) {
         		$identityId = $this->findOrCreateIdentity($identity);
         		$this->createCleaningIdentity($cleaningId, $identityId, $quantity);
         	}
+
+        	$this->createIndex($cleaningId);
         }
+    }
+
+    private function createIndex($cleaningId) {
+    	$identities = Identity::all();
+    	$index = '';
+    	foreach ($identities as $key => $identity) {
+    		$cleaningIdentity = CleaningIdentities::where('cleaning_id', $cleaningId)->where('identity_id', $identity->id)->first();
+    		if (!$cleaningIdentity) {
+    			continue;
+    		}
+    		$qty = $cleaningIdentity->quantity;
+    		if ($key > 0) {
+    			$index .= ',';
+    		}
+    		$index .= $qty;
+    	}
+    	if (!$index) {
+    		return;
+    	}
+    	$cleaning = Cleaning::find($cleaningId);
+    	$cleaning->search_index = $index;
+    	$cleaning->save();
     }
 
     private function createCleaning($params) {
