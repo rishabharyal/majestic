@@ -79,12 +79,13 @@
 								<td>{{$cleaning->total_price}}</td>
 								<td>
 									<table class="table table-striped table-sm">
-										{{ dd($cleaning->prices) }}
 										@foreach($cleaning->prices as $price)
-											<tr>
-												<td>{{ $price->identity->name }}</td>
-												<td>{{ $price->quantity }}</td>
-											</tr>
+											@if($price->quantity)
+												<tr>
+													<td>{{ $price->identity->title }}</td>
+													<td>{{ $price->quantity }}</td>
+												</tr>
+											@endif
 										@endforeach
 									</table>
 								</td>
