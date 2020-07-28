@@ -1,4 +1,5 @@
-<section class="mj-bdy-section mr-first-banner"> 
+<section class="mj-bdy-section mr-first-banner">
+	<example-component></example-component>
 	<div class="mj-bdy-container">
 		<div class="mj-bdy-content">
 			<div class="mj-header-content mg-slider-banner">
