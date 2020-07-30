@@ -90,7 +90,7 @@
 							</ul>
 						</div>
 						<div class="col-12 mj-focusbtn">
-							<a href="#" class="btn mg-btn-primary">
+						<a href="{{action('HomeController@showBookingPage')}}" class="btn mg-btn-primary">
 								Book Online
 							</a>
 						</div>

@@ -21,6 +21,7 @@ Route::get('/blog', 'HomeController@index');
 Route::get('/blog/{id}', 'HomeController@show');
 Route::get('/contact-us', 'HomeController@showContactPage');
 Route::get('/about', 'HomeController@showAboutPage');
+Route::get('/booking', 'HomeController@showBookingPage');
 
 Route::prefix('admin')->namespace('Admin')->middleware('auth')->group(static function () {
     Route::resource('/', 'DashboardController');

@@ -1,4 +1,4 @@
-<section class="mj-bdy-section mj-bdy-section-parag">
+{{-- <section class="mj-bdy-section mj-bdy-section-parag">
 	<div class="mj-bdy-container">
 		<div class="mj-bdy-content mj-services-content">
 			<div class="mj-inside-bdy row">
@@ -31,4 +31,4 @@
 			</div>
 		</div>
 	</div>
-</section>
+</section> --}}

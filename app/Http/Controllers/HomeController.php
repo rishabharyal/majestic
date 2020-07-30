@@ -52,4 +52,8 @@ class HomeController extends ParentController
     {
         return view('contactus');
     }
+    public function showBookingPage()
+    {
+        return view('booking');
+    }
 }
