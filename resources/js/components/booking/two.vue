@@ -23,7 +23,7 @@
                   <i class="fa fa-search"></i>
                 </span>
                 <ul>
-                  <li v-for="(result,i) in places" :key="result.code" @click="selectPlace(i)">
+                  <li v-show="showDropdown && results.length" v-for="(result,i) in results" :key="result.code" @click="selectPlace(i)">
                     <!-- <a href="#"> -->
                     <div class="info">
                       <span class="title">{{result.title}}</span>
@@ -103,7 +103,14 @@ export default {
     },
   },
   data: function () {
-    return { placeQuery: "", code: "", showError: false, places: [] };
+    return { 
+      placeQuery: "",
+      code: "",
+      showError:false, 
+      places: [],
+      showDropdown: false,
+      results: []
+    };
   },
   methods: {
     submitData: function (page) {
@@ -118,6 +125,7 @@ export default {
       }
     },
     selectPlace: function (i) {
+      this.showDropdown = false;
       this.placeQuery = this.places[i].title;
       this.postalCode = this.places[i].code;
     },
@@ -144,7 +152,15 @@ export default {
         },
       ];
 
-      window.console.log(this.places);
+      let filter = [];
+      this.places.forEach((item) => {
+        if (item.title.toLowerCase().includes(this.placeQuery.toLowerCase())) {
+          filter.push(item);
+        }
+      });
+
+      this.results = filter;
+      this.showDropdown = true;
     },
   },
 };
