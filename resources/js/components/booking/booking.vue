@@ -88,13 +88,13 @@ export default {
         {
           id: 2,
           img: "images/housecleaning.jpg",
-          title: "Office Cleaning",
+          title: "House CLeaning",
           price: "$240",
         },
         {
           id: 3,
           img: "images/housecleaning.jpg",
-          title: "Office Cleaning",
+          title: "Bathroom CLeaning",
           price: "$240",
         },
         {

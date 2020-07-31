@@ -28,6 +28,20 @@
                     />
                     <label class="custom-control-label" for="mj_block">House</label>
                   </div>
+                  <div class="row" v-if="requirement == 'House'">
+                    <div
+                      class="col-12 mj-cst-sel-col-add"
+                      v-for="room in variables.roomTypes"
+                      :key="room.id"
+                    >
+                      <label>{{room.name}}</label>
+                      <div class="qty">
+                        <button class="minus mj-bd-dark" @click="decrementCount(room.id)">-</button>
+                        <input type="number" class="count" name="qty" :value="roomCount[room.id]" />
+                        <button class="plus mj-bd-dark" @click="incrementCount(room.id)">+</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="mj-cst-sel-col-radio col-12">
                   <div class="custom-control custom-radio">
@@ -40,7 +54,7 @@
                     />
                     <label class="custom-control-label" for="mj_house">Block</label>
                   </div>
-                  <div class="row" v-if="requirement">
+                  <div class="row" v-if="requirement == 'Block'">
                     <div
                       class="col-12 mj-cst-sel-col-add"
                       v-for="room in variables.roomTypes"

@@ -10,48 +10,48 @@
             >Give you more time too spend on what really matters, Spare some time for real life.</span>
           </div>
           <div class="mj-inside-bdy">
-            <form>
-              <div class="row">
-                <div class="service col-xs-12 col-sm-12 col-md-6 col-lg-6 form-group">
-                  <input
-                    autocomplete="off"
-                    type="text"
-                    name="service"
-                    placeholder="What do you need help with?"
-                    class="txtShowDiv"
-                  />
-                  <span class="mg-search-icon">
-                    <i class="fa fa-search"></i>
-                  </span>
-                  <ul class="mg-ul-hidden">
-                    <li
-                      v-for="cleaning in variables.cleaningTypes"
-                      :key="cleaning.id"
-                      @click="$emit('event-emitted',{
+            <div class="row">
+              <div class="service col-xs-12 col-sm-12 col-md-6 col-lg-6 form-group">
+                <input
+                  autocomplete="off"
+                  type="text"
+                  name="service"
+                  @input="search"
+                  v-model="searchQuery"
+                  placeholder="What do you need help with?"
+                  class="txtShowDiv"
+                />
+                <span class="mg-search-icon">
+                  <i class="fa fa-search"></i>
+                </span>
+                <ul class="mg-ul-hidden">
+                  <li
+                    v-for="cleaning in filteredCleaningTypes"
+                    :key="cleaning.id"
+                    @click="$emit('event-emitted',{
                       [page]:{ cleaningType : cleaning.id},
                       increment : true,
                     })"
-                    >
-                      <!-- <a href="#"> -->
-                      <img :src="cleaning.img" />
-                      <div class="info">
-                        <span class="title">{{cleaning.title}}</span>
-                        <span class="price">
-                          from
-                          <span>{{cleaning.price}}</span>
-                        </span>
-                      </div>
-                      <!-- </a> -->
-                    </li>
-                  </ul>
-                </div>
-                <!-- <div class="col-12 mj-focusbtn">
+                  >
+                    <!-- <a href="#"> -->
+                    <img :src="cleaning.img" />
+                    <div class="info">
+                      <span class="title">{{cleaning.title}}</span>
+                      <span class="price">
+                        from
+                        <span>{{cleaning.price}}</span>
+                      </span>
+                    </div>
+                    <!-- </a> -->
+                  </li>
+                </ul>
+              </div>
+              <!-- <div class="col-12 mj-focusbtn">
 								<a href="#" class="btn mg-btn-primary">
 									Book Online
 								</a>
-                </div>-->
-              </div>
-            </form>
+              </div>-->
+            </div>
           </div>
         </div>
       </div>
@@ -104,6 +104,24 @@
 
 <script>
 export default {
+  data: function () {
+    return {
+      searchQuery: "",
+      filteredCleaningTypes: [],
+    };
+  },
+  methods: {
+    search: function () {
+      this.filteredCleaningTypes = [];
+      this.variables.cleaningTypes.forEach((element) => {
+        if (
+          element.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+        ) {
+          this.filteredCleaningTypes.push(element);
+        }
+      });
+    },
+  },
   props: {
     variables: {
       type: Object,
@@ -114,8 +132,8 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    console.log("Component mounted.");
+  created() {
+    this.filteredCleaningTypes = this.variables.cleaningTypes;
   },
 };
 </script>

@@ -8,29 +8,34 @@
             <span class="mj-span-ng">Give us you'r local you want us to be.</span>
           </div>
           <div class="mj-inside-bdy">
-            <form>
-              <div class="row">
-                <div class="service col-xs-12 col-sm-12 col-md-6 col-lg-6 form-group">
-                  <input
-                    type="text"
-                    name="service"
-                    placeholder="Postal code?"
-                    required
-                    v-model="code"
-                  />
-                  <span class="mg-search-icon">
-                    <i class="fa fa-map-marker"></i>
-                  </span>
-                </div>
-                <p
-                  class="col-12 invalid-feedback text-danger text-bold text-center"
-                  v-show="showError"
-                >Please choose a valid Postal Code.</p>
-                <div class="col-12 mj-focusbtn">
-                  <a @click="submitData(page)" class="btn mg-btn-primary">Continue</a>
-                </div>
+            <div class="row">
+              <div class="service col-xs-12 col-sm-12 col-md-6 col-lg-6 form-group">
+                <input
+                  autocomplete="off"
+                  type="text"
+                  name="service"
+                  @input="getPlaces"
+                  v-model="placeQuery"
+                  placeholder="Search Location"
+                  class="txtShowDiv"
+                />
+                <span class="mg-search-icon">
+                  <i class="fa fa-search"></i>
+                </span>
+                <ul>
+                  <li v-for="(result,i) in places" :key="result.code" @click="selectPlace(i)">
+                    <!-- <a href="#"> -->
+                    <div class="info">
+                      <span class="title">{{result.title}}</span>
+                    </div>
+                    <!-- </a> -->
+                  </li>
+                </ul>
               </div>
-            </form>
+              <div class="col-12 mj-focusbtn">
+                <a href="#" class="btn mg-btn-primary">Continue</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -82,7 +87,10 @@
   </section>
 </template>
 
+
 <script>
+const axios = require("axios");
+
 export default {
   props: {
     variables: {
@@ -95,10 +103,7 @@ export default {
     },
   },
   data: function () {
-    return {
-      code: "",
-      showError: false,
-    };
+    return { placeQuery: "", code: "", showError: false, places: [] };
   },
   methods: {
     submitData: function (page) {
@@ -112,9 +117,35 @@ export default {
         });
       }
     },
-  },
-  mounted() {
-    console.log("Component mounted.");
+    selectPlace: function (i) {
+      this.placeQuery = this.places[i].title;
+      this.postalCode = this.places[i].code;
+    },
+    getPlaces: function (e) {
+      var options = {
+        types: ["address"],
+        componentRestrictions: {
+          country: "AU",
+          postalCode: "2000",
+        },
+      };
+      this.places = [
+        {
+          title: "Hetauda Karra 44100",
+          code: 44100,
+        },
+        {
+          title: "Hetauda Gardoi 44200",
+          code: 44200,
+        },
+        {
+          title: "Hetauda Armchaur 23999",
+          code: 23999,
+        },
+      ];
+
+      window.console.log(this.places);
+    },
   },
 };
 </script>
