@@ -3321,6 +3321,18 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       this.placeQuery = this.places[i].title;
       this.postalCode = this.places[i].code;
     },
+    changeComponent: function changeComponent() {
+      if (this.placeQuery && this.postalCode) {
+        var _this$$emit2;
+
+        this.$emit((_this$$emit2 = {}, _defineProperty(_this$$emit2, this.page, {
+          postalCode: this.postalCode
+        }), _defineProperty(_this$$emit2, "increment", true), _this$$emit2));
+        return;
+      }
+
+      alert('You must select your address.');
+    },
     getPlaces: function getPlaces(e) {
       var _this = this;
 
@@ -41091,14 +41103,23 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(2)
+              _c("div", { staticClass: "col-12 mj-focusbtn" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn mg-btn-primary",
+                    on: { click: _vm.changeComponent }
+                  },
+                  [_vm._v("Continue")]
+                )
+              ])
             ])
           ])
         ])
       ])
     ]),
     _vm._v(" "),
-    _vm._m(3)
+    _vm._m(2)
   ])
 }
 var staticRenderFns = [
@@ -41120,16 +41141,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "mg-search-icon" }, [
       _c("i", { staticClass: "fa fa-search" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 mj-focusbtn" }, [
-      _c("a", { staticClass: "btn mg-btn-primary", attrs: { href: "#" } }, [
-        _vm._v("Continue")
-      ])
     ])
   },
   function() {

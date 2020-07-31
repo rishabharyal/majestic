@@ -33,7 +33,7 @@
                 </ul>
               </div>
               <div class="col-12 mj-focusbtn">
-                <a href="#" class="btn mg-btn-primary">Continue</a>
+                <a @click="changeComponent" class="btn mg-btn-primary">Continue</a>
               </div>
             </div>
           </div>
@@ -128,6 +128,18 @@ export default {
       this.showDropdown = false;
       this.placeQuery = this.places[i].title;
       this.postalCode = this.places[i].code;
+    },
+    changeComponent: function() {
+      if (this.placeQuery && this.postalCode) {
+        this.$emit({
+          [this.page]:{
+            postalCode: this.postalCode
+          },
+          increment : true,
+        });
+        return;
+      }
+      alert('You must select your address.');
     },
     getPlaces: function (e) {
       var options = {
