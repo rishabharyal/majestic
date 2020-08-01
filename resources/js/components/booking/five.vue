@@ -126,7 +126,7 @@
                 </div>
               </div>
             </div>
-            <Progress></Progress>
+            <Progress :progress="progress"></Progress>
           </div>
         </div>
       </div>
@@ -136,11 +136,16 @@
 
 <script>
 import Progress from "./progress";
+
 export default {
   components: {
     Progress,
   },
   props: {
+    progress: {
+      type: Object,
+      required: true,
+    },
     variables: {
       type: Object,
       required: true,

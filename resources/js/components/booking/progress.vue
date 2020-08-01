@@ -10,7 +10,7 @@
             <span class="fa fa-map-marker"></span>
             Postcode:
           </label>
-          <span class="mj-cst-sel-sum-detail-row-value">0000</span>
+          <span class="mj-cst-sel-sum-detail-row-value">{{progress.postalCode}}</span>
         </div>
         <div class="mj-cst-sel-sum-detail-row">
           <label class="mj-cst-sel-sum-detail-row-title">
@@ -18,9 +18,16 @@
             Selected Services:
           </label>
           <ul class="mj-cst-sel-sum-detail-row-ul">
-            <li class="mj-cst-sel-sum-detail-row-li">House</li>
-            <li class="mj-cst-sel-sum-detail-row-li">5 Bedrooms</li>
-            <li class="mj-cst-sel-sum-detail-row-li">5 Bathroom</li>
+            <li class="mj-cst-sel-sum-detail-row-li">{{progress.cleaningType}}</li>
+            <li class="mj-cst-sel-sum-detail-row-li">{{progress.requirement}}</li>
+            <li
+              class="mj-cst-sel-sum-detail-row-li"
+              v-for="roomObj in progress.roomCount"
+              :key="roomObj.title"
+            >
+              {{
+              roomObj.title + ' - '+ roomObj.value}}
+            </li>
           </ul>
           <div class="mj-cst-sel-sum-detail-row-img">
             <img src="images/housecleaning.jpg" />
@@ -63,6 +70,12 @@
 
 <script>
 export default {
+  props: {
+    progress: {
+      type: Object,
+      required: true,
+    },
+  },
   mounted() {
     console.log("Component mounted.");
   },

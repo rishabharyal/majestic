@@ -3,6 +3,7 @@
     :is="pages[currentPage]"
     :variables="passData"
     :page="currentPage"
+    :progress="progress"
     @event-emitted="handleEvent"
   ></component>
 </template>
@@ -21,8 +22,8 @@ export default {
     "booking-two": BookingTwo,
     "booking-three": BookingThree,
     "booking-four": BookingFour,
-    "booking-five": BookingFive,
-    "booking-six": BookingSix,
+    // "booking-five": BookingFive,
+    // "booking-six": BookingSix,
   },
   data: function () {
     return {
@@ -32,8 +33,8 @@ export default {
         "booking-two",
         "booking-three",
         "booking-four",
-        "booking-five",
-        "booking-six",
+        // "booking-five",
+        // "booking-six",
       ],
       roomTypes: [
         {
@@ -113,6 +114,18 @@ export default {
     };
   },
   methods: {
+    searchValueInObject: function (
+      arrayOfObj,
+      searchKey,
+      searchValue,
+      returnKey
+    ) {
+      for (let index = 0; index < arrayOfObj.length; index++) {
+        if (arrayOfObj[index][searchKey] == searchValue) {
+          return arrayOfObj[index][returnKey];
+        }
+      }
+    },
     incrementPage: function () {
       if (this.currentPage < this.pages.length) this.currentPage++;
     },
@@ -152,6 +165,31 @@ export default {
           return {};
         }
       }
+    },
+    progress: function () {
+      return {
+        postalCode: this.booking.postalCode,
+        cleaningType: this.cleaningTypes[this.booking.cleaningType]
+          ? this.cleaningTypes[this.booking.cleaningType].title
+          : "",
+        requirement: this.booking.requirement,
+        roomCount: this.getRoomCountObject,
+      };
+    },
+    getRoomCountObject: function () {
+      let obj = [];
+      for (let roomTypeId in this.booking.roomCount) {
+        obj.push({
+          title: this.searchValueInObject(
+            this.roomTypes,
+            "id",
+            roomTypeId,
+            "name"
+          ),
+          value: this.booking.roomCount[roomTypeId],
+        });
+      }
+      return obj;
     },
   },
 };

@@ -23,7 +23,12 @@
                   <i class="fa fa-search"></i>
                 </span>
                 <ul>
-                  <li v-show="showDropdown && results.length" v-for="(result,i) in results" :key="result.code" @click="selectPlace(i)">
+                  <li
+                    v-show="showDropdown && results.length"
+                    v-for="(result,i) in results"
+                    :key="result.code"
+                    @click="selectPlace(i)"
+                  >
                     <!-- <a href="#"> -->
                     <div class="info">
                       <span class="title">{{result.title}}</span>
@@ -33,7 +38,7 @@
                 </ul>
               </div>
               <div class="col-12 mj-focusbtn">
-                <a @click="changeComponent" class="btn mg-btn-primary">Continue</a>
+                <a @click="submitData" class="btn mg-btn-primary">Continue</a>
               </div>
             </div>
           </div>
@@ -46,9 +51,6 @@
         <div class="mj-bdy-content mj-services-content">
           <div class="mj-header-content">
             <h1 class="mj-header">How Majestic Services Work</h1>
-            <!-- <span class="mj-span"> 
-						Professional Cleaning Services for Home, Apartment and Office
-            </span>-->
           </div>
           <div class="mj-inside-bdy row">
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mj-lst">
@@ -103,43 +105,43 @@ export default {
     },
   },
   data: function () {
-    return { 
+    return {
       placeQuery: "",
       code: "",
-      showError:false, 
+      showError: false,
       places: [],
       showDropdown: false,
-      results: []
+      results: [],
     };
   },
   methods: {
-    submitData: function (page) {
-      this.showError = false;
-      if (this.code.length < 4) {
-        this.showError = true;
-      } else {
+    submitData: function () {
+      if (this.placeQuery && this.postalCode) {
+        console.log("yo");
         this.$emit("event-emitted", {
-          [page]: { postalCode: this.code },
+          [this.page]: { postalCode: this.postalCode },
           increment: true,
         });
+        return;
       }
+      alert("You must select your address.");
     },
     selectPlace: function (i) {
       this.showDropdown = false;
       this.placeQuery = this.places[i].title;
       this.postalCode = this.places[i].code;
     },
-    changeComponent: function() {
+    changeComponent: function () {
       if (this.placeQuery && this.postalCode) {
         this.$emit({
-          [this.page]:{
-            postalCode: this.postalCode
+          [this.page]: {
+            postalCode: this.postalCode,
           },
-          increment : true,
+          increment: true,
         });
         return;
       }
-      alert('You must select your address.');
+      alert("You must select your address.");
     },
     getPlaces: function (e) {
       var options = {

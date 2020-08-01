@@ -58,7 +58,7 @@
                   </div>
                 </div>
               </div>
-              <Progress></Progress>
+              <Progress :progress="progress"></Progress>
             </div>
           </form>
         </div>
@@ -75,6 +75,10 @@ export default {
   },
   props: {
     variables: {
+      type: Object,
+      required: true,
+    },
+    progress: {
       type: Object,
       required: true,
     },

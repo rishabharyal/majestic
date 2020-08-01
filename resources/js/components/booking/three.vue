@@ -2,14 +2,6 @@
   <section class="mj-bdy-section mj-cser-section">
     <div class="mj-bdy-container">
       <div class="mj-bdy-content">
-        <!-- <div class="mj-header-content mg-slider-banner">
-					<h1 class="mj-header-ng">
-						Where can we be?
-					</h1>
-					<span class=" mj-span-ng"> 
-						Give us you'r local you want us to be.
-					</span>
-        </div>-->
         <div class="mj-inside-bdy">
           <div class="mj-cst-sel row">
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 mr-auto form-group mj-cst-sel-col">
@@ -97,7 +89,7 @@
                 </div>
               </div>
             </div>
-            <Progress></Progress>
+            <Progress :progress="progress"></Progress>
           </div>
         </div>
       </div>
@@ -113,6 +105,10 @@ export default {
   },
   props: {
     variables: {
+      type: Object,
+      required: true,
+    },
+    progress: {
       type: Object,
       required: true,
     },
