@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Cleaning;
+use App\CleaningType;
 use Illuminate\Http\Request;
 
-class CleaningController extends Controller
+class CleaningTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Cleaning $cleaning)
+    public function index()
     {
-        // $type = $request->get('');
+        //
     }
 
     /**
@@ -41,10 +41,10 @@ class CleaningController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Cleaning  $cleaning
+     * @param  \App\CleaningType  $cleaningType
      * @return \Illuminate\Http\Response
      */
-    public function show(Cleaning $cleaning)
+    public function show(CleaningType $cleaningType)
     {
         //
     }
@@ -52,10 +52,10 @@ class CleaningController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Cleaning  $cleaning
+     * @param  \App\CleaningType  $cleaningType
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cleaning $cleaning)
+    public function edit(CleaningType $cleaningType)
     {
         //
     }
@@ -64,10 +64,10 @@ class CleaningController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Cleaning  $cleaning
+     * @param  \App\CleaningType  $cleaningType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cleaning $cleaning)
+    public function update(Request $request, CleaningType $cleaningType)
     {
         //
     }
@@ -75,10 +75,10 @@ class CleaningController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Cleaning  $cleaning
+     * @param  \App\CleaningType  $cleaningType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cleaning $cleaning)
+    public function destroy(CleaningType $cleaningType)
     {
         //
     }

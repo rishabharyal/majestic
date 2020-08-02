@@ -10,15 +10,18 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use App\Identity;
 use App\Cleaning;
 use App\CleaningIdentities;
+use App\CleaningType;
 
 HeadingRowFormatter::default('none');
 
 class Cleanings implements ToCollection, WithHeadingRow
 {
 	private $type;
+    private $cleaning_type_id;
 
 	public function __construct($type = 'Regular') {
 		$this->type = $type;
+        $this->createCleaningType();
 	}
 
     /**
@@ -72,13 +75,28 @@ class Cleanings implements ToCollection, WithHeadingRow
     	$cleaning->save();
     }
 
+    private function createCleaningType() {
+        $title = $this->type;
+        $cleaningType = CleaningType::where('code', $title)->first();
+
+        if ($cleaningType) {
+            $this->cleaning_type_id = $cleaningType->id;
+            return;
+        }
+
+        $this->cleaning_type_id =  (CleaningType::create([
+            'title' => $title,
+            'code' => $title
+        ]))->id;
+    }
+
     private function createCleaning($params) {
-    	$cleaning = Cleaning::where('type', $this->type)->where('code', $params['code'])->first();
+    	$cleaning = Cleaning::where('type_id', $this->cleaning_type_id)->where('code', $params['code'])->first();
     	if ($cleaning) {
     		return $cleaning->id;
     	}
 
-    	$params['type'] = $this->type;
+    	$params['type_id'] = $this->cleaning_type_id;
     	return (Cleaning::create($params))->id;
 
     }
