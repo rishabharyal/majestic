@@ -16,7 +16,8 @@
                       class="custom-control-input"
                       id="mj_block"
                       name="mjradio"
-                      @click="requirement = 'House'"
+                      value="House"
+                      v-model="requirement"
                     />
                     <label class="custom-control-label" for="mj_block">House</label>
                   </div>
@@ -42,7 +43,8 @@
                       class="custom-control-input"
                       id="mj_house"
                       name="mjradio"
-                      @click="requirement = 'Block'"
+                      value="Block"
+                      v-model="requirement"
                     />
                     <label class="custom-control-label" for="mj_house">Block</label>
                   </div>
@@ -141,10 +143,15 @@ export default {
     },
   },
   created() {
-    this.variables.roomTypes.forEach((room) => {
-      this.roomCount[room.id] = 1;
-    });
-    window.console.log(this.roomCount);
+    console.log(this.variables.old);
+    if (this.variables.old.roomCount) {
+      this.requirement = this.variables.old.requirement;
+      this.roomCount = this.variables.old.roomCount;
+    } else {
+      this.variables.roomTypes.forEach((room) => {
+        this.roomCount[room.id] = 1;
+      });
+    }
   },
 };
 </script>

@@ -76,8 +76,8 @@ export default {
         cleaningType: "",
         postalCode: "",
         requirement: "",
-        roomCount: {},
-        selectedExtraCleanings: [],
+        roomCount: null,
+        selectedExtraCleanings: null,
       },
       cleaningTypes: [
         {
@@ -156,7 +156,13 @@ export default {
           return {};
           break;
         case 2:
-          return { roomTypes: this.roomTypes };
+          return {
+            roomTypes: this.roomTypes,
+            old: {
+              requirement: this.booking.requirement,
+              roomCount: this.booking.roomCount,
+            },
+          };
           break;
         case 3:
           return { extraCleanings: this.extraCleanings };
