@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cleaning extends Model
 {
     protected $fillable = [
-    	'type',
+    	'type_id',
     	'code',
     	'total_hours',
     	'price_per_hour',
