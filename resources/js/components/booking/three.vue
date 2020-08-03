@@ -17,17 +17,17 @@
                       id="mj_block"
                       name="mjradio"
                       value="House"
-                      v-model="requirement"
+                      v-model="houseOrBlock"
                     />
                     <label class="custom-control-label" for="mj_block">House</label>
                   </div>
-                  <div class="row" v-if="requirement == 'House'">
+                  <div class="row" v-if="houseOrBlock == 'House'">
                     <div
                       class="col-12 mj-cst-sel-col-add"
-                      v-for="room in variables.roomTypes"
+                      v-for="room in cleaningIdentities"
                       :key="room.id"
                     >
-                      <label>{{room.name}}</label>
+                      <label>{{room.title}}</label>
                       <div class="qty">
                         <button class="minus mj-bd-dark" @click="decrementCount(room.id)">-</button>
                         <input type="number" class="count" name="qty" :value="roomCount[room.id]" />
@@ -44,17 +44,17 @@
                       id="mj_house"
                       name="mjradio"
                       value="Block"
-                      v-model="requirement"
+                      v-model="houseOrBlock"
                     />
                     <label class="custom-control-label" for="mj_house">Block</label>
                   </div>
-                  <div class="row" v-if="requirement == 'Block'">
+                  <div class="row" v-if="houseOrBlock == 'Block'">
                     <div
                       class="col-12 mj-cst-sel-col-add"
-                      v-for="room in variables.roomTypes"
+                      v-for="room in cleaningIdentities"
                       :key="room.id"
                     >
-                      <label>{{room.name}}</label>
+                      <label>{{room.title}}</label>
                       <div class="qty">
                         <button class="minus mj-bd-dark" @click="decrementCount(room.id)">-</button>
                         <input type="number" class="count" name="qty" :value="roomCount[room.id]" />
@@ -67,8 +67,7 @@
                   <div class="mg-float-left">
                     <a
                       class="btn mg-btn-primary-outline"
-                      @click="$emit('event-emitted',{
-                      [page]:{ requirement,roomCount},
+                      @click="$emit('page-progressed',{
                       decrement : true,
                     })"
                     >
@@ -77,13 +76,7 @@
                     </a>
                   </div>
                   <div class="mg-float-right">
-                    <a
-                      class="btn mg-btn-primary"
-                      @click="$emit('event-emitted',{
-                      [page]:{ requirement,roomCount},
-                      increment : true,
-                    })"
-                    >
+                    <a class="btn mg-btn-primary" @click="handleSubmit">
                       Next
                       <i class="fa fa-arrow-right"></i>
                     </a>
@@ -91,7 +84,7 @@
                 </div>
               </div>
             </div>
-            <Progress :progress="progress"></Progress>
+            <!-- <Progress :progress="progress"></Progress> -->
           </div>
         </div>
       </div>
@@ -101,28 +94,14 @@
 
 <script>
 import Progress from "./progress";
+import { mapGetters } from "vuex";
 export default {
   components: {
     Progress: Progress,
   },
-  props: {
-    variables: {
-      type: Object,
-      required: true,
-    },
-    progress: {
-      type: Object,
-      required: true,
-    },
-    page: {
-      type: Number,
-      required: true,
-    },
-  },
   data: function () {
     return {
-      requirement: "",
-      isVisible: false,
+      houseOrBlock: "",
       roomCount: {},
     };
   },
@@ -133,6 +112,13 @@ export default {
       temp[id]++;
       this.roomCount = temp;
     },
+    handleSubmit: function (cleaningTypeId) {
+      this.$store.dispatch("updateUserBooking", {
+        houseOrBlock: this.houseOrBlock,
+        cleaningIdentitiesCounts: this.roomCount,
+      });
+      this.$emit("page-progressed", { increment: true });
+    },
     decrementCount: function (id) {
       if (this.roomCount[id] > 0) {
         let temp = this.roomCount;
@@ -142,16 +128,19 @@ export default {
       }
     },
   },
+  computed: {
+    ...mapGetters(["cleaningIdentities", "booking"]),
+  },
   created() {
-    console.log(this.variables.old);
-    if (this.variables.old.roomCount) {
-      this.requirement = this.variables.old.requirement;
-      this.roomCount = this.variables.old.roomCount;
-    } else {
-      this.variables.roomTypes.forEach((room) => {
-        this.roomCount[room.id] = 1;
+    this.$store.dispatch("getCleaningIdentities").then(() => {
+      this.cleaningIdentities.forEach((element) => {
+        this.roomCount[element.id] = 1;
       });
-    }
+    });
+
+    this.houseOrBlock = this.booking.houseOrBlock;
+    if (this.booking.cleaningIdentitiesCounts)
+      this.roomCount = this.booking.cleaningIdentitiesCounts;
   },
 };
 </script>

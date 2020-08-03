@@ -28,13 +28,10 @@
                   <li
                     v-for="cleaning in filteredCleaningTypes"
                     :key="cleaning.id"
-                    @click="$emit('event-emitted',{
-                      [page]:{ cleaningType : cleaning.id},
-                      increment : true,
-                    })"
+                    @click="handleSubmit(cleaning.id)"
                   >
                     <!-- <a href="#"> -->
-                    <img :src="cleaning.img" />
+                    <img src="images/window.jpg" />
                     <div class="info">
                       <span class="title">{{cleaning.title}}</span>
                       <span class="price">
@@ -42,15 +39,9 @@
                         <span>{{cleaning.price}}</span>
                       </span>
                     </div>
-                    <!-- </a> -->
                   </li>
                 </ul>
               </div>
-              <!-- <div class="col-12 mj-focusbtn">
-								<a href="#" class="btn mg-btn-primary">
-									Book Online
-								</a>
-              </div>-->
             </div>
           </div>
         </div>
@@ -61,9 +52,6 @@
         <div class="mj-bdy-content mj-services-content">
           <div class="mj-header-content">
             <h1 class="mj-header">How Majestic Services Work</h1>
-            <!-- <span class="mj-span"> 
-						Professional Cleaning Services for Home, Apartment and Office
-            </span>-->
           </div>
           <div class="mj-inside-bdy row">
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mj-lst">
@@ -103,6 +91,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data: function () {
     return {
@@ -113,7 +103,7 @@ export default {
   methods: {
     search: function () {
       this.filteredCleaningTypes = [];
-      this.variables.cleaningTypes.forEach((element) => {
+      this.cleaningTypes.forEach((element) => {
         if (
           element.title.toLowerCase().includes(this.searchQuery.toLowerCase())
         ) {
@@ -121,19 +111,21 @@ export default {
         }
       });
     },
+    handleSubmit: function (cleaningTypeId) {
+      this.$store.dispatch("updateUserBooking", {
+        cleaningType: cleaningTypeId,
+      });
+
+      this.$emit("page-progressed", { increment: true });
+    },
   },
-  props: {
-    variables: {
-      type: Object,
-      required: true,
-    },
-    page: {
-      type: Number,
-      required: true,
-    },
+  computed: {
+    ...mapGetters(["cleaningTypes"]),
   },
   created() {
-    this.filteredCleaningTypes = this.variables.cleaningTypes;
+    this.$store.dispatch("getCleaningTypes").then((d) => {
+      this.filteredCleaningTypes = this.cleaningTypes;
+    });
   },
 };
 </script>

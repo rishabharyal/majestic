@@ -19,7 +19,7 @@
           </label>
           <ul class="mj-cst-sel-sum-detail-row-ul">
             <li class="mj-cst-sel-sum-detail-row-li">{{progress.cleaningType}}</li>
-            <li class="mj-cst-sel-sum-detail-row-li">{{progress.requirement}}</li>
+            <li class="mj-cst-sel-sum-detail-row-li">{{progress.cleaningSize}}</li>
             <li
               class="mj-cst-sel-sum-detail-row-li"
               v-for="roomObj in progress.roomCount"
@@ -27,6 +27,22 @@
             >
               {{
               roomObj.title + ' - '+ roomObj.value}}
+            </li>
+            <li
+              class="mj-cst-sel-sum-detail-row-li"
+              v-for="extraCleaning in progress.selectedExtraCleanings"
+              :key="extraCleaning"
+            >
+              {{
+              extraCleaning}}
+            </li>
+            <li
+              class="mj-cst-sel-sum-detail-row-li"
+              v-for="additionalRoom in progress.selectedAdditionalServices"
+              :key="additionalRoom"
+            >
+              {{
+              additionalRoom }}
             </li>
           </ul>
           <div class="mj-cst-sel-sum-detail-row-img">
@@ -76,8 +92,8 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    console.log("Component mounted.");
+  created() {
+    console.log(this.progress);
   },
 };
 </script>

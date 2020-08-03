@@ -12,7 +12,7 @@
                 <div class="mj-cst-sel-col-bdy row">
                   <div
                     class="mj-cst-sel-col-radio col-12"
-                    v-for="cleaning in variables.extraCleanings"
+                    v-for="cleaning in extraCleaningIdentities"
                     :key="cleaning.id"
                   >
                     <div class="custom-control custom-checkbox">
@@ -26,15 +26,14 @@
                       />
                       <label class="custom-control-label" :for="cleaning.id">
                         <img src="images/laundry.jpeg" />
-                        {{cleaning.name}}
+                        {{cleaning.title}}
                       </label>
                     </div>
                   </div>
                   <div class="mj-cst-sel-col-btn col-6 row">
                     <div class="mg-float-left">
                       <a
-                        @click="$emit('event-emitted',{
-                      [page]:{ selectedExtraCleanings},
+                        @click="$emit('page-progressed',{
                       decrement : true,
                     })"
                         class="btn mg-btn-primary-outline"
@@ -44,13 +43,7 @@
                       </a>
                     </div>
                     <div class="mg-float-right">
-                      <a
-                        @click="$emit('event-emitted',{
-                      [page]:{ selectedExtraCleanings},
-                      increment : true,
-                    })"
-                        class="btn mg-btn-primary"
-                      >
+                      <a @click="handleSubmit" class="btn mg-btn-primary">
                         Next
                         <i class="fa fa-arrow-right"></i>
                       </a>
@@ -58,7 +51,7 @@
                   </div>
                 </div>
               </div>
-              <Progress :progress="progress"></Progress>
+              <!-- <Progress :progress="progress"></Progress> -->
             </div>
           </form>
         </div>
@@ -69,28 +62,30 @@
 
 <script>
 import Progress from "./progress";
+import { mapGetters } from "vuex";
 export default {
   components: {
     Progress,
   },
-  props: {
-    variables: {
-      type: Object,
-      required: true,
-    },
-    progress: {
-      type: Object,
-      required: true,
-    },
-    page: {
-      type: Number,
-      required: true,
+  methods: {
+    handleSubmit() {
+      this.$store.dispatch("updateUserBooking", {
+        extraCleaningIdentities: this.selectedExtraCleanings,
+      });
+      this.$emit("page-progressed", { increment: true });
     },
   },
   data: function () {
     return {
       selectedExtraCleanings: [],
     };
+  },
+  computed: {
+    ...mapGetters(["extraCleaningIdentities", "booking"]),
+  },
+  created() {
+    this.$store.dispatch("getExtraCleaningIdentities");
+    this.selectedExtraCleanings = this.booking.extraCleaningIdentities;
   },
 };
 </script>

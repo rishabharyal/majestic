@@ -14,12 +14,12 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 
 Route::namespace('Api')->group(static function () {
+	Route::get('cleaning-types', 'CleaningTypeController@index');
 	Route::get('cleanings', 'CleaningController@index');
 	Route::get('extra-identities', 'OrderWizardController@getExtraCleaningIdentities');
 	Route::get('additional-services', 'OrderWizardController@getAdditionalServices');
-	
 });

@@ -91,35 +91,34 @@
 
 
 <script>
-const axios = require("axios");
+import { mapGetters } from "vuex";
 
 export default {
-  props: {
-    variables: {
-      type: Object,
-      required: true,
-    },
-    page: {
-      type: Number,
-      required: true,
-    },
-  },
   data: function () {
     return {
       placeQuery: "",
-      code: "",
+      postalCode: "",
       showError: false,
       places: [],
       showDropdown: false,
       results: [],
     };
   },
+  created() {
+    console.log(this.booking);
+    this.placeQuery = this.booking.postalCode;
+    this.postalCode = this.booking.postalCode;
+  },
+  computed: {
+    ...mapGetters(["booking"]),
+  },
   methods: {
     submitData: function () {
       if (this.placeQuery && this.postalCode) {
-        console.log("yo");
-        this.$emit("event-emitted", {
-          [this.page]: { postalCode: this.postalCode },
+        this.$store.dispatch("updateUserBooking", {
+          postalCode: this.postalCode,
+        });
+        this.$emit("page-progressed", {
           increment: true,
         });
         return;
@@ -128,20 +127,8 @@ export default {
     },
     selectPlace: function (i) {
       this.showDropdown = false;
-      this.placeQuery = this.places[i].title;
-      this.postalCode = this.places[i].code;
-    },
-    changeComponent: function () {
-      if (this.placeQuery && this.postalCode) {
-        this.$emit({
-          [this.page]: {
-            postalCode: this.postalCode,
-          },
-          increment: true,
-        });
-        return;
-      }
-      alert("You must select your address.");
+      this.placeQuery = this.results[i].title;
+      this.postalCode = this.results[i].code;
     },
     getPlaces: function (e) {
       var options = {

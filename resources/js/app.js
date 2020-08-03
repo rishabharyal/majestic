@@ -7,10 +7,21 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import Vuex from 'vuex'
+import booking from "./components/booking/booking.vue"
 
-Vue.component('booking', require('./components/booking/booking.vue').default);
+Vue.use(Vuex);
+
+import { STORE } from './store/index'
+import WebService from "./web";
+WebService.init();
+
 const app = new Vue({
     el: '#app',
+    store: STORE,
+    components: {
+        booking
+    }
 });
 
 
