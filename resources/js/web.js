@@ -66,6 +66,9 @@ const CleaningTypesServices = {
     return Web.query('cleaning-types', params);
   },
   getExtraCleaningTypes() {
+    return Web.get("extra-services");
+  },
+  getFinalCleaningTypes() {
     return Web.get("additional-services");
   }
 };

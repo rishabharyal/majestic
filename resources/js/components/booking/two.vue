@@ -118,6 +118,9 @@ export default {
         this.$store.dispatch("updateUserBooking", {
           postalCode: this.postalCode,
         });
+        this.$store.dispatch("updateProgress", {
+          postalCode: this.postalCode,
+        });
         this.$emit("page-progressed", {
           increment: true,
         });

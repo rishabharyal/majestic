@@ -2,7 +2,7 @@
   <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group mj-cst-sel-sum">
     <div class="mj-cst-sel-sum-detail">
       <div class="mj-cst-sel-sum-detail-title">
-        <h4>End of Lease Cleaning</h4>
+        <h4>{{progress.cleaningType}}</h4>
       </div>
       <div class="mj-cst-sel-sum-detail-bdy">
         <div class="mj-cst-sel-sum-detail-row">
@@ -18,32 +18,40 @@
             Selected Services:
           </label>
           <ul class="mj-cst-sel-sum-detail-row-ul">
-            <li class="mj-cst-sel-sum-detail-row-li">{{progress.cleaningType}}</li>
-            <li class="mj-cst-sel-sum-detail-row-li">{{progress.cleaningSize}}</li>
-            <li
-              class="mj-cst-sel-sum-detail-row-li"
-              v-for="roomObj in progress.roomCount"
-              :key="roomObj.title"
-            >
-              {{
-              roomObj.title + ' - '+ roomObj.value}}
-            </li>
-            <li
-              class="mj-cst-sel-sum-detail-row-li"
-              v-for="extraCleaning in progress.selectedExtraCleanings"
-              :key="extraCleaning"
-            >
-              {{
-              extraCleaning}}
-            </li>
-            <li
-              class="mj-cst-sel-sum-detail-row-li"
-              v-for="additionalRoom in progress.selectedAdditionalServices"
-              :key="additionalRoom"
-            >
-              {{
-              additionalRoom }}
-            </li>
+            <!-- <li class="mj-cst-sel-sum-detail-row-li">{{progress.cleaningType}}</li> -->
+            <div v-show="currentPage>2">
+              <li class="mj-cst-sel-sum-detail-row-li">{{progress.houseOrBlock}}</li>
+            </div>
+            <div v-show="currentPage>2">
+              <li
+                class="mj-cst-sel-sum-detail-row-li"
+                v-for="room in progress.cleaningIdentitiesCounts"
+                :key="room.title"
+              >
+                {{
+                room.title + ' - '+ room.count}}
+              </li>
+            </div>
+            <div v-show="currentPage>3">
+              <li
+                class="mj-cst-sel-sum-detail-row-li"
+                v-for="extraCleaningIdentity in progress.extraCleaningIdentities"
+                :key="'extra_identity_'+extraCleaningIdentity"
+              >
+                {{
+                extraCleaningIdentity}}
+              </li>
+            </div>
+            <div v-show="currentPage>4">
+              <li
+                class="mj-cst-sel-sum-detail-row-li"
+                v-for="extraCleaningType in progress.extraCleaningTypes"
+                :key="'extra_type_'+extraCleaningType"
+              >
+                {{
+                extraCleaningType}}
+              </li>
+            </div>
           </ul>
           <div class="mj-cst-sel-sum-detail-row-img">
             <img src="images/housecleaning.jpg" />
@@ -51,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="mj-cst-des-row">
+    <!-- <div class="mj-cst-des-row">
       <div class="mj-cst-des-row-title">
         <h4>Lorem</h4>
         <a href="#" class="mj-cst-des-row-bt">
@@ -80,20 +88,15 @@
           <li class="mj-cst-des-row-li">Lorem ipsum dolor sit amet</li>
         </ul>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  props: {
-    progress: {
-      type: Object,
-      required: true,
-    },
-  },
-  created() {
-    console.log(this.progress);
+  computed: {
+    ...mapGetters(["progress", "currentPage"]),
   },
 };
 </script>

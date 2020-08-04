@@ -9,7 +9,7 @@ class CleaningTypeController extends Controller
 {
 	public function index()
 	{
-		$types  = CleaningType::get(['id', 'title']);
+		$types  = CleaningType::where('step_number', 1)->get(['id', 'title']);
 
 		return response()->json([
 			'success' => true,

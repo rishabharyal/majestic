@@ -8,6 +8,7 @@ const state = {
     cleaningIdentities: [],
     extraCleaningIdentities: [],
     extraCleaningTypes: [],
+    finalCleaningTypes: [],
     booking: {
         cleaningType: null,
         postalCode: null,
@@ -15,7 +16,20 @@ const state = {
         cleaningIdentitiesCounts: {},
         extraCleaningIdentities: [],
         extraCleaningTypes: [],
-        extraCleaningCount: {},
+        extraCleaningTypesCount: {},
+        finalCleaningTypes: [],
+        finalCleaningTypesIdentities: [],
+        finalCleaningCount: {},
+    },
+    progress: {
+        cleaningType: '',
+        postalCode: '',
+        houseOrBlock: '',
+        cleaningIdentitiesCounts: {},
+        extraCleaningIdentities: [],
+        finalCleaningTypes: [],
+        extraCleaningTypes: [],
+        extraCleaningTypesCount: {},
     }
 };
 
@@ -26,6 +40,9 @@ const getters = {
     currentPage(state) {
         return state.currentPage;
     },
+    progress(state) {
+        return state.progress;
+    },
     cleaningTypes(state) {
         return state.cleaningTypes;
     },
@@ -34,6 +51,9 @@ const getters = {
     },
     extraCleaningTypes(state) {
         return state.extraCleaningTypes;
+    },
+    finalCleaningTypes(state) {
+        return state.finalCleaningTypes;
     },
     cleaningIdentities(state) {
         return state.cleaningIdentities;
@@ -95,8 +115,24 @@ const actions = {
             })
         });
     },
+    getFinalCleaningTypes(context) {
+        return new Promise(async (resolve, reject) => {
+            CleaningTypesServices.getFinalCleaningTypes().then((data) => {
+                data = data["data"];
+                console.log(data);
+                if (data['success']) {
+                    context.commit('setFinalCleaningTypes', data["data"]);
+                    resolve(data['data']);
+                }
+                else reject(data['message']);
+            })
+        });
+    },
     updateUserBooking(context, updateData) {
         context.commit("updateUserBooking", updateData);
+    },
+    updateProgress(context, updateData) {
+        context.commit("updateProgress", updateData);
     },
     incrementPage(context) {
         context.commit("incrementPage");
@@ -120,6 +156,9 @@ const mutations = {
     setExtraCleaningTypes(state, data) {
         state.extraCleaningTypes = data;
     },
+    setFinalCleaningTypes(state, data) {
+        state.finalCleaningTypes = data;
+    },
     updateUserBooking(state, data) {
         let temp = state.booking;
         state.booking = {};
@@ -130,6 +169,17 @@ const mutations = {
             }
         }
         state.booking = temp;
+    },
+    updateProgress(state, data) {
+        let temp = state.progress;
+        state.progress = {};
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                temp[key] = data[key];
+
+            }
+        }
+        state.progress = temp;
     },
     incrementPage(state) {
         state.currentPage++;

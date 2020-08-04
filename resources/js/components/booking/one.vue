@@ -28,7 +28,7 @@
                   <li
                     v-for="cleaning in filteredCleaningTypes"
                     :key="cleaning.id"
-                    @click="handleSubmit(cleaning.id)"
+                    @click="handleSubmit(cleaning.id,cleaning.title)"
                   >
                     <!-- <a href="#"> -->
                     <img src="images/window.jpg" />
@@ -111,9 +111,12 @@ export default {
         }
       });
     },
-    handleSubmit: function (cleaningTypeId) {
+    handleSubmit: function (cleaningTypeId, cleaningTypeName) {
       this.$store.dispatch("updateUserBooking", {
         cleaningType: cleaningTypeId,
+      });
+      this.$store.dispatch("updateProgress", {
+        cleaningType: cleaningTypeName,
       });
 
       this.$emit("page-progressed", { increment: true });

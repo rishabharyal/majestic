@@ -84,7 +84,7 @@
                 </div>
               </div>
             </div>
-            <!-- <Progress :progress="progress"></Progress> -->
+            <Progress></Progress>
           </div>
         </div>
       </div>
@@ -112,10 +112,41 @@ export default {
       temp[id]++;
       this.roomCount = temp;
     },
+    searchValueInObject: function (
+      arrayOfObj,
+      searchKey,
+      searchValue,
+      returnKey
+    ) {
+      for (let index = 0; index < arrayOfObj.length; index++) {
+        if (arrayOfObj[index][searchKey] == searchValue) {
+          return arrayOfObj[index][returnKey];
+        }
+      }
+    },
     handleSubmit: function (cleaningTypeId) {
       this.$store.dispatch("updateUserBooking", {
         houseOrBlock: this.houseOrBlock,
         cleaningIdentitiesCounts: this.roomCount,
+      });
+
+      let roomCountWithName = [];
+      for (const identityId in this.roomCount) {
+        if (this.roomCount.hasOwnProperty(identityId)) {
+          roomCountWithName.push({
+            title: this.searchValueInObject(
+              this.cleaningIdentities,
+              "id",
+              identityId,
+              "title"
+            ),
+            count: this.roomCount[identityId],
+          });
+        }
+      }
+      this.$store.dispatch("updateProgress", {
+        houseOrBlock: this.houseOrBlock,
+        cleaningIdentitiesCounts: roomCountWithName,
       });
       this.$emit("page-progressed", { increment: true });
     },

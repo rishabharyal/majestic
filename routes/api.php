@@ -21,5 +21,6 @@ Route::namespace('Api')->group(static function () {
 	Route::get('cleaning-types', 'CleaningTypeController@index');
 	Route::get('cleanings', 'CleaningController@index');
 	Route::get('extra-identities', 'OrderWizardController@getExtraCleaningIdentities');
+	Route::get('extra-services', 'OrderWizardController@getExtraCleaningTypes');
 	Route::get('additional-services', 'OrderWizardController@getAdditionalServices');
 });

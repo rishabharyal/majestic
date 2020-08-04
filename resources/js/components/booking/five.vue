@@ -78,7 +78,7 @@
                 </div>
               </div>
             </div>
-            <!-- <Progress :progress="progress"></Progress> -->
+            <Progress></Progress>
           </div>
         </div>
       </div>
@@ -108,6 +108,18 @@ export default {
       temp[serviceId][intityId]++;
       this.additionalServicesRoomCount = temp;
     },
+    searchValueInObject: function (
+      arrayOfObj,
+      searchKey,
+      searchValue,
+      returnKey
+    ) {
+      for (let index = 0; index < arrayOfObj.length; index++) {
+        if (arrayOfObj[index][searchKey] == searchValue) {
+          return arrayOfObj[index][returnKey];
+        }
+      }
+    },
     decrementCount: function (serviceId, intityId) {
       if (this.additionalServicesRoomCount[serviceId][intityId] > 0) {
         let temp = this.additionalServicesRoomCount;
@@ -119,10 +131,24 @@ export default {
     handleSubmit: function () {
       this.$store.dispatch("updateUserBooking", {
         extraCleaningTypes: this.selectedAdditionalServices,
-        extraCleaningCount: this.additionalServicesRoomCount,
+        extraCleaningTypesCount: this.additionalServicesRoomCount,
       });
-      console.log(this.booking);
-      // this.$emit("page-progressed", { increment: true });
+      let extraCleaningTypesName = [];
+
+      this.selectedAdditionalServices.forEach((element) => {
+        let title = this.searchValueInObject(
+          this.extraCleaningTypes,
+          "id",
+          element,
+          "title"
+        );
+        extraCleaningTypesName.push(title);
+      });
+      this.$store.dispatch("updateProgress", {
+        extraCleaningTypes: extraCleaningTypesName,
+      });
+      // console.log(extraCleaningTypesName);
+      this.$emit("page-progressed", { increment: true });
     },
   },
   computed: {
@@ -130,6 +156,8 @@ export default {
   },
   created() {
     this.$store.dispatch("getExtraCleaningTypes").then((data) => {
+      let additionalServicesRoomCount = {};
+
       this.extraCleaningTypes.forEach((element) => {
         if (element.data) {
           let identities = element.data;
@@ -137,9 +165,10 @@ export default {
           identities.forEach((identity) => {
             counts[identity.id] = 1;
           });
-          this.additionalServicesRoomCount[element.id] = counts;
+          additionalServicesRoomCount[element.id] = counts;
         }
       });
+      this.additionalServicesRoomCount = additionalServicesRoomCount;
     });
     if (this.booking.extraCleaningTypes) {
       this.selectedAdditionalServices = this.booking.extraCleaningTypes;

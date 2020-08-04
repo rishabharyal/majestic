@@ -51,7 +51,7 @@
                   </div>
                 </div>
               </div>
-              <!-- <Progress :progress="progress"></Progress> -->
+              <Progress></Progress>
             </div>
           </form>
         </div>
@@ -68,9 +68,36 @@ export default {
     Progress,
   },
   methods: {
+    searchValueInObject: function (
+      arrayOfObj,
+      searchKey,
+      searchValue,
+      returnKey
+    ) {
+      for (let index = 0; index < arrayOfObj.length; index++) {
+        if (arrayOfObj[index][searchKey] == searchValue) {
+          return arrayOfObj[index][returnKey];
+        }
+      }
+    },
     handleSubmit() {
       this.$store.dispatch("updateUserBooking", {
         extraCleaningIdentities: this.selectedExtraCleanings,
+      });
+      let extraCleaningIdentitiesName = [];
+      this.selectedExtraCleanings.forEach((element) => {
+        extraCleaningIdentitiesName.push(
+          this.searchValueInObject(
+            this.extraCleaningIdentities,
+            "id",
+            element,
+            "title"
+          )
+        );
+      });
+      // console.log(extraCleaningIdentitiesName);
+      this.$store.dispatch("updateProgress", {
+        extraCleaningIdentities: extraCleaningIdentitiesName,
       });
       this.$emit("page-progressed", { increment: true });
     },
