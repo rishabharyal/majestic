@@ -157,18 +157,18 @@ export default {
       let temp = this.finalCleaningIdentitiesCount;
       this.finalCleaningIdentitiesCount = {};
       temp[serviceId][identityId]++;
-      this.additionalServicesRoomCount = temp;
+      this.finalCleaningIdentitiesCount = temp;
     },
     decrementCount: function (serviceId, identityId) {
       if (this.finalCleaningIdentitiesCount[serviceId][identityId] > 0) {
         let temp = this.finalCleaningIdentitiesCount;
         this.finalCleaningIdentitiesCount = {};
         temp[serviceId][identityId]--;
-        this.additionalServicesRoomCount = temp;
+        this.finalCleaningIdentitiesCount = temp;
       }
     },
     handleSubmit: function () {
-      this.$store.dispatch("updateBooking", {
+      this.$store.dispatch("updateUserBooking", {
         finalCleaningTypes: this.selectedFinalCleaningTypes,
         finalCleaningIdentitiesCount: this.finalCleaningIdentitiesCount,
         finalCleaningTypesIdentities: this.selectedFinalCleaningIdentities,
