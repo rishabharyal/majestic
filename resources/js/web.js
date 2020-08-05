@@ -65,12 +65,12 @@ const CleaningTypesServices = {
   query(params = {}) {
     return Web.query('cleaning-types', params);
   },
-  getExtraCleaningTypes() {
-    return Web.get("extra-services");
+  getDescriptions() {
+    return Web.get("cleaning-types/description");
   },
-  getFinalCleaningTypes() {
-    return Web.get("additional-services");
-  }
+  getExtraCleaningTypes(step_number) {
+    return Web.get("extra-cleaning-types", step_number);
+  },
 };
 const BookingServices = {
   save(data = {}) {

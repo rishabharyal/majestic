@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Identity;
 use App\CleaningType;
 use App\CleaningIdentities;
+use Illuminate\Http\Request;
 
 class OrderWizardController extends Controller
 {
@@ -18,9 +19,9 @@ class OrderWizardController extends Controller
 		]);
 	}
 
-	public function getExtraCleaningTypes(CleaningType $cleaningType)
+	public function getExtraCleaningTypes($step_number, CleaningType $cleaningType)
 	{
-		$cleaningType = $cleaningType->where('step_number', 5)->get();
+		$cleaningType = $cleaningType->where('step_number', $step_number)->get();
 
 		if (!count($cleaningType)) {
 			return response()->json([
@@ -30,9 +31,9 @@ class OrderWizardController extends Controller
 		}
 
 
-		$cleanings = $cleaningType->map(function(CleaningType $cleaningItem) {
-            return $this->mapFunction($cleaningItem);
-        });
+		$cleanings = $cleaningType->map(function (CleaningType $cleaningItem) {
+			return $this->mapFunction($cleaningItem);
+		});
 
 		return response()->json([
 			'success' => true,
@@ -40,49 +41,27 @@ class OrderWizardController extends Controller
 		]);
 	}
 
-	public function getAdditionalServices(CleaningType $cleaningType)
+	public function mapFunction(CleaningType $cleaningItem)
 	{
-
-		$cleaningType = $cleaningType->where('step_number', 6)->get();
-
-		if (!count($cleaningType)) {
-			return response()->json([
-				'success' => false,
-				'message' => 'Cleaning type not found!'
-			]);
+		$cleaning = Cleaning::where('type_id', $cleaningItem->id)->first();
+		if (!$cleaning) {
+			return [
+				'id' => $cleaningItem->id,
+				'title' => $cleaningItem->title,
+				'data' => null,
+			];
 		}
 
+		$cleaningIdentities = CleaningIdentities::where('cleaning_id', $cleaning->id)->pluck('identity_id')->toArray();
 
-		$cleanings = $cleaningType->map(function(CleaningType $cleaningItem) {
-            return $this->mapFunction($cleaningItem);
-        });
+		$identities = Identity::whereIn('id', $cleaningIdentities)->get([
+			'id', 'title', 'field_type'
+		])->toArray();
 
-		return response()->json([
-			'success' => true,
-			'data' => $cleanings
-		]);
+		return [
+			'id' => $cleaningItem->id,
+			'title' => $cleaningItem->title,
+			'data' => $identities
+		];
 	}
-
-    public function mapFunction(CleaningType $cleaningItem) {
-        $cleaning = Cleaning::where('type_id', $cleaningItem->id)->first();
-        if (!$cleaning) {
-            return [
-                'id' => $cleaningItem->id,
-                'title' => $cleaningItem->title,
-                'data' => null,
-            ];
-        }
-
-        $cleaningIdentities = CleaningIdentities::where('cleaning_id', $cleaning->id)->pluck('identity_id')->toArray();
-
-        $identities = Identity::whereIn('id', $cleaningIdentities)->get([
-            'id', 'title', 'field_type'
-        ])->toArray();
-
-        return [
-            'id' => $cleaningItem->id,
-            'title' => $cleaningItem->title,
-            'data' => $identities
-        ];
-    }
 }

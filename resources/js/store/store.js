@@ -1,9 +1,9 @@
 import { CleaningServices, CleaningTypesServices } from "../web";
-import { reject } from "lodash";
 
 
 const state = {
     currentPage: 0,
+    cleaningTypeDescriptions: [],
     cleaningTypes: [],
     cleaningIdentities: [],
     extraCleaningIdentities: [],
@@ -63,6 +63,9 @@ const getters = {
     cleanings(state) {
         return state.cleanings;
     },
+    cleaningTypeDescriptions(state) {
+        return state.cleaningTypeDescriptions;
+    },
 
 };
 
@@ -71,10 +74,20 @@ const actions = {
         return new Promise(async (resolve) => {
             CleaningTypesServices.query().then((data) => {
                 data = data["data"];
-                console.log(data);
                 if (data["success"]) {
                     context.commit('setCleaningTypes', data["data"]["cleaning-types"]);
                     resolve(data['data']['cleaning-types']);
+                } else reject(data['message']);
+            });
+        });
+    },
+    getCleaningTypeDescriptions(context) {
+        return new Promise(async (resolve) => {
+            CleaningTypesServices.getDescriptions().then((data) => {
+                data = data["data"];
+                if (data["success"]) {
+                    context.commit('setCleaningTypeDescriptions', data["data"]);
+                    resolve(data['data']);
                 } else reject(data['message']);
             });
         });
@@ -104,7 +117,7 @@ const actions = {
     },
     getExtraCleaningTypes(context) {
         return new Promise(async (resolve, reject) => {
-            CleaningTypesServices.getExtraCleaningTypes().then((data) => {
+            CleaningTypesServices.getExtraCleaningTypes('5').then((data) => {
                 data = data["data"];
                 if (data['success']) {
                     context.commit('setExtraCleaningTypes', data["data"]);
@@ -116,9 +129,8 @@ const actions = {
     },
     getFinalCleaningTypes(context) {
         return new Promise(async (resolve, reject) => {
-            CleaningTypesServices.getFinalCleaningTypes().then((data) => {
+            CleaningTypesServices.getExtraCleaningTypes('6').then((data) => {
                 data = data["data"];
-                console.log(data);
                 if (data['success']) {
                     context.commit('setFinalCleaningTypes', data["data"]);
                     resolve(data['data']);
@@ -145,6 +157,9 @@ const actions = {
 const mutations = {
     setCleaningTypes(state, data) {
         state.cleaningTypes = data;
+    },
+    setCleaningTypeDescriptions(state, data) {
+        state.cleaningTypeDescriptions = data;
     },
     setCleaningIdentities(state, data) {
         state.cleaningIdentities = data;

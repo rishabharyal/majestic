@@ -218,28 +218,26 @@ export default {
     ...mapGetters(["finalCleaningTypes", "booking"]),
   },
   created() {
-    this.$store.dispatch("getFinalCleaningTypes").then((data) => {
-      let finalCleaningIdentitiesCount = {};
-      this.finalCleaningTypes.forEach((element) => {
-        if (element.data) {
-          let identities = element.data;
-          this.selectedFinalCleaningIdentities[element.id] = element.data[0].id;
-          if (identities[0].field_type == "quantity") {
-            let counts = {};
-            identities.forEach((identity) => {
-              counts[identity.id] = 1;
-            });
-            finalCleaningIdentitiesCount[element.id] = counts;
-          }
+    let finalCleaningIdentitiesCount = {};
+    this.finalCleaningTypes.forEach((element) => {
+      if (element.data) {
+        let identities = element.data;
+        this.selectedFinalCleaningIdentities[element.id] = element.data[0].id;
+        if (identities[0].field_type == "quantity") {
+          let counts = {};
+          identities.forEach((identity) => {
+            counts[identity.id] = 1;
+          });
+          finalCleaningIdentitiesCount[element.id] = counts;
         }
-      });
+      }
       this.finalCleaningIdentitiesCount = finalCleaningIdentitiesCount;
+      if (this.booking.finalCleaningTypes.length > 0) {
+        this.selectedFinalCleaningTypes = this.booking.finalCleaningTypes;
+        this.selectedFinalCleaningIdentities = this.booking.finalCleaningTypesIdentities;
+        this.finalCleaningIdentitiesCount = this.booking.finalCleaningIdentitiesCount;
+      }
     });
-    if (this.booking.finalCleaningTypes) {
-      this.selectedFinalCleaningTypes = this.booking.finalCleaningTypes;
-      this.selectedFinalCleaningIdentities = this.booking.finalCleaningTypesIdentities;
-      this.finalCleaningIdentitiesCount = this.booking.finalCleaningIdentitiesCount;
-    }
   },
 };
 </script>

@@ -175,9 +175,8 @@ export default {
     ...mapGetters(["extraCleaningTypes", "booking"]),
   },
   created() {
-    this.$store.dispatch("getExtraCleaningTypes").then((data) => {
+    if (!this.booking.extraCleaningTypes.length > 0) {
       let additionalServicesRoomCount = {};
-
       this.extraCleaningTypes.forEach((element) => {
         if (element.data) {
           let identities = element.data;
@@ -189,10 +188,12 @@ export default {
         }
       });
       this.additionalServicesRoomCount = additionalServicesRoomCount;
-    });
-    if (this.booking.extraCleaningTypes) {
+    }
+
+    if (this.booking.extraCleaningTypes.length > 0) {
+      console.log("do this");
       this.selectedAdditionalServices = this.booking.extraCleaningTypes;
-      this.additionalServicesRoomCount = this.booking.extraCleaningCount;
+      this.additionalServicesRoomCount = this.booking.extraCleaningTypesCount;
     }
   },
 };

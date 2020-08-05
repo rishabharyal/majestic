@@ -9,6 +9,7 @@ import BookingThree from "./three";
 import BookingFour from "./four";
 import BookingFive from "./five";
 import BookingSix from "./six";
+import BookingSeven from "./seven";
 import { mapGetters } from "vuex";
 
 export default {
@@ -19,6 +20,7 @@ export default {
     "booking-four": BookingFour,
     "booking-five": BookingFive,
     "booking-six": BookingSix,
+    "booking-seven": BookingSeven,
   },
   data: function () {
     return {
@@ -29,6 +31,7 @@ export default {
         "booking-four",
         "booking-five",
         "booking-six",
+        "booking-seven",
       ],
     };
   },
@@ -104,6 +107,14 @@ export default {
   },
   computed: {
     ...mapGetters(["currentPage", "booking"]),
+  },
+  created() {
+    this.$store.dispatch("getCleaningTypes");
+    this.$store.dispatch("getCleaningIdentities");
+    this.$store.dispatch("getCleaningTypeDescriptions");
+    this.$store.dispatch("getExtraCleaningIdentities");
+    this.$store.dispatch("getExtraCleaningTypes");
+    this.$store.dispatch("getFinalCleaningTypes");
   },
 };
 </script>

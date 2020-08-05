@@ -53,4 +53,23 @@ class CleaningController extends Controller
 			]
 		]);
 	}
+
+	public function getDescription($id)
+	{
+		$cleaning = CleaningType::find($id);
+		if ($cleaning) {
+			return response()->json([
+				'success' => false,
+				'message' => 'Cleaning type not found!'
+			]);
+		}
+
+		return response()->json([
+			'success' => true,
+			'data' => [
+				'title' => $cleaning->title,
+				'description' => $cleaning->description,
+			]
+		]);
+	}
 }

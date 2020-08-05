@@ -111,7 +111,6 @@ export default {
     ...mapGetters(["extraCleaningIdentities", "booking"]),
   },
   created() {
-    this.$store.dispatch("getExtraCleaningIdentities");
     this.selectedExtraCleanings = this.booking.extraCleaningIdentities;
   },
 };

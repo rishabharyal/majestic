@@ -19,8 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::namespace('Api')->group(static function () {
 	Route::get('cleaning-types', 'CleaningTypeController@index');
+	Route::get('cleaning-types/description', 'CleaningTypeController@getDescriptions');
 	Route::get('cleanings', 'CleaningController@index');
 	Route::get('extra-identities', 'OrderWizardController@getExtraCleaningIdentities');
-	Route::get('extra-services', 'OrderWizardController@getExtraCleaningTypes');
-	Route::get('additional-services', 'OrderWizardController@getAdditionalServices');
+	Route::get('extra-cleaning-types/{step_number}', 'OrderWizardController@getExtraCleaningTypes');
 });

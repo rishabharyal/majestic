@@ -77,36 +77,25 @@
         </div>
       </div>
     </div>
-    <!-- <div class="mj-cst-des-row">
-      <div class="mj-cst-des-row-title">
-        <h4>Lorem</h4>
-        <a href="#" class="mj-cst-des-row-bt">
-          <span class="fa fa-chevron-down"></span>
-        </a>
-      </div>
-      <div class="mj-cst-des-row-bdy">
-        <ul class="mj-cst-des-row-ul">
-          <li class="mj-cst-des-row-li">Lorem ipsum dolor sit amet</li>
-          <li class="mj-cst-des-row-li">Lorem ipsum dolor sit amet</li>
-          <li class="mj-cst-des-row-li">Lorem ipsum dolor sit amet</li>
-        </ul>
+    <div
+      class="mj-cst-des-row"
+      v-for="cleaningType in cleaningTypeDescriptions"
+      :key="cleaningType.id"
+      @click="toggleDescription(cleaningType.id)"
+    >
+      <div>
+        <div class="mj-cst-des-row-title">
+          <h4>{{cleaningType.title}}</h4>
+          <a class="mj-cst-des-row-bt">
+            <span class="fa fa-chevron-down"></span>
+          </a>
+        </div>
+        <div
+          v-show="visibleDescription == cleaningType.id"
+          class="mj-cst-des-row-bdy"
+        >{{cleaningType.description}}</div>
       </div>
     </div>
-    <div class="mj-cst-des-row">
-      <div class="mj-cst-des-row-title">
-        <h4>Lorem</h4>
-        <a href="#" class="mj-cst-des-row-bt">
-          <span class="fa fa-chevron-down"></span>
-        </a>
-      </div>
-      <div class="mj-cst-des-row-bdy">
-        <ul class="mj-cst-des-row-ul">
-          <li class="mj-cst-des-row-li">Lorem ipsum dolor sit amet</li>
-          <li class="mj-cst-des-row-li">Lorem ipsum dolor sit amet</li>
-          <li class="mj-cst-des-row-li">Lorem ipsum dolor sit amet</li>
-        </ul>
-      </div>
-    </div>-->
   </div>
 </template>
 
@@ -114,7 +103,18 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["progress", "currentPage"]),
+    ...mapGetters(["progress", "currentPage", "cleaningTypeDescriptions"]),
+  },
+  data: function () {
+    return {
+      visibleDescription: null,
+    };
+  },
+  methods: {
+    toggleDescription: function (id) {
+      if (this.visibleDescription == id) this.visibleDescription = null;
+      else this.visibleDescription = id;
+    },
   },
 };
 </script>
