@@ -30,28 +30,9 @@ class OrderWizardController extends Controller
 		}
 
 
-		$cleanings = $cleaningType->map(function (CleaningType $cleaningItem) {
-			$cleaning = Cleaning::where('type_id', $cleaningItem->id)->first();
-			if (!$cleaning) {
-				return [
-					'id' => $cleaningItem->id,
-					'title' => $cleaningItem->title,
-					'data' => null,
-				];
-			}
-
-			$cleaningIdentities = CleaningIdentities::where('cleaning_id', $cleaning->id)->pluck('identity_id')->toArray();
-
-			$identities = Identity::whereIn('id', $cleaningIdentities)->get([
-				'id', 'title', 'field_type'
-			])->toArray();
-
-			return [
-				'id' => $cleaningItem->id,
-				'title' => $cleaningItem->title,
-				'data' => $identities
-			];
-		});
+		$cleanings = $cleaningType->map(function(CleaningType $cleaningItem) {
+            return $this->mapFunction($cleaningItem);
+        });
 
 		return response()->json([
 			'success' => true,
@@ -72,32 +53,36 @@ class OrderWizardController extends Controller
 		}
 
 
-		$cleanings = $cleaningType->map(function (CleaningType $cleaningItem) {
-			$cleaning = Cleaning::where('type_id', $cleaningItem->id)->first();
-			if (!$cleaning) {
-				return [
-					'id' => $cleaningItem->id,
-					'title' => $cleaningItem->title,
-					'data' => null,
-				];
-			}
-
-			$cleaningIdentities = CleaningIdentities::where('cleaning_id', $cleaning->id)->pluck('identity_id')->toArray();
-
-			$identities = Identity::whereIn('id', $cleaningIdentities)->get([
-				'id', 'title', 'field_type'
-			])->toArray();
-
-			return [
-				'id' => $cleaningItem->id,
-				'title' => $cleaningItem->title,
-				'data' => $identities
-			];
-		});
+		$cleanings = $cleaningType->map(function(CleaningType $cleaningItem) {
+            return $this->mapFunction($cleaningItem);
+        });
 
 		return response()->json([
 			'success' => true,
 			'data' => $cleanings
 		]);
 	}
+
+    public function mapFunction(CleaningType $cleaningItem) {
+        $cleaning = Cleaning::where('type_id', $cleaningItem->id)->first();
+        if (!$cleaning) {
+            return [
+                'id' => $cleaningItem->id,
+                'title' => $cleaningItem->title,
+                'data' => null,
+            ];
+        }
+
+        $cleaningIdentities = CleaningIdentities::where('cleaning_id', $cleaning->id)->pluck('identity_id')->toArray();
+
+        $identities = Identity::whereIn('id', $cleaningIdentities)->get([
+            'id', 'title', 'field_type'
+        ])->toArray();
+
+        return [
+            'id' => $cleaningItem->id,
+            'title' => $cleaningItem->title,
+            'data' => $identities
+        ];
+    }
 }
