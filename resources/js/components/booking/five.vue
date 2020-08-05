@@ -108,7 +108,7 @@ export default {
       temp[serviceId][intityId]++;
       this.additionalServicesRoomCount = temp;
     },
-    searchValueInObject: function (
+    searchValueInArrayOfObjects: function (
       arrayOfObj,
       searchKey,
       searchValue,
@@ -116,7 +116,10 @@ export default {
     ) {
       for (let index = 0; index < arrayOfObj.length; index++) {
         if (arrayOfObj[index][searchKey] == searchValue) {
-          return arrayOfObj[index][returnKey];
+          return {
+            title: arrayOfObj[index][returnKey],
+            elementIndex: index,
+          };
         }
       }
     },
@@ -136,18 +139,35 @@ export default {
       let extraCleaningTypesName = [];
 
       this.selectedAdditionalServices.forEach((element) => {
-        let title = this.searchValueInObject(
+        let { title, elementIndex } = this.searchValueInArrayOfObjects(
           this.extraCleaningTypes,
           "id",
           element,
           "title"
         );
-        extraCleaningTypesName.push(title);
+        let children = [];
+        let obj = this.additionalServicesRoomCount[element];
+        if (obj) {
+          for (const identityId in obj) {
+            if (obj.hasOwnProperty(identityId)) {
+              let { title } = this.searchValueInArrayOfObjects(
+                this.extraCleaningTypes[elementIndex]["data"],
+                "id",
+                identityId,
+                "title"
+              );
+              let count = obj[identityId];
+              children.push({ title: title, count: count });
+            }
+          }
+        }
+
+        extraCleaningTypesName.push({ title: title, children: children });
       });
+
       this.$store.dispatch("updateProgress", {
         extraCleaningTypes: extraCleaningTypesName,
       });
-      // console.log(extraCleaningTypesName);
       this.$emit("page-progressed", { increment: true });
     },
   },

@@ -16,10 +16,8 @@ const state = {
         cleaningIdentitiesCounts: {},
         extraCleaningIdentities: [],
         extraCleaningTypes: [],
-        extraCleaningTypesCount: {},
         finalCleaningTypes: [],
         finalCleaningTypesIdentities: [],
-        finalCleaningCount: {},
     },
     progress: {
         cleaningType: '',
@@ -41,6 +39,7 @@ const getters = {
         return state.currentPage;
     },
     progress(state) {
+        console.log(state.progress);
         return state.progress;
     },
     cleaningTypes(state) {

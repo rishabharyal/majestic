@@ -22,7 +22,7 @@
                         class="custom-control-input"
                         :id="cleaning.id"
                         :value="cleaning.id"
-                        name="mjradio"
+                        :name="'mjradio_'+cleaning.id"
                       />
                       <label class="custom-control-label" :for="cleaning.id">
                         <img src="images/laundry.jpeg" />

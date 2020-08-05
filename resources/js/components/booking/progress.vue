@@ -20,16 +20,21 @@
           <ul class="mj-cst-sel-sum-detail-row-ul">
             <!-- <li class="mj-cst-sel-sum-detail-row-li">{{progress.cleaningType}}</li> -->
             <div v-show="currentPage>2">
-              <li class="mj-cst-sel-sum-detail-row-li">{{progress.houseOrBlock}}</li>
+              <li class="mj-cst-sel-sum-detail-row-li">
+                <strong style="font-weight:bold !important">{{progress.houseOrBlock}}</strong>
+              </li>
             </div>
-            <div v-show="currentPage>2">
+            <div v-show="currentPage>2" style="padding-left:10px">
               <li
                 class="mj-cst-sel-sum-detail-row-li"
                 v-for="room in progress.cleaningIdentitiesCounts"
+                p
                 :key="room.title"
               >
-                {{
-                room.title + ' - '+ room.count}}
+                <span v-if="room.count>0">
+                  {{
+                  room.title + ' - '+ room.count}}
+                </span>
               </li>
             </div>
             <div v-show="currentPage>3">
@@ -42,14 +47,27 @@
                 extraCleaningIdentity}}
               </li>
             </div>
-            <div v-show="currentPage>4">
+            <div>
               <li
                 class="mj-cst-sel-sum-detail-row-li"
                 v-for="extraCleaningType in progress.extraCleaningTypes"
-                :key="'extra_type_'+extraCleaningType"
+                :key="'extra_type_'+extraCleaningType.title"
               >
                 {{
-                extraCleaningType}}
+                extraCleaningType.title}}
+                <div v-if="extraCleaningType.children.length>0">
+                  <li
+                    style="padding-left:10px"
+                    class="mj-cst-sel-sum-detail-row-li"
+                    v-for="extraCleaningTypeIdentity in extraCleaningType.children"
+                    :key="'extra_type_identity_'+extraCleaningTypeIdentity.title"
+                  >
+                    <span v-if="extraCleaningTypeIdentity.count>0">
+                      {{
+                      extraCleaningTypeIdentity.title + ' - '+extraCleaningTypeIdentity.count}}
+                    </span>
+                  </li>
+                </div>
               </li>
             </div>
           </ul>

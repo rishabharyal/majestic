@@ -33,21 +33,64 @@ export default {
     };
   },
   methods: {
-    searchValueInObject: function (
-      arrayOfObj,
-      searchKey,
-      searchValue,
-      returnKey
-    ) {
-      for (let index = 0; index < arrayOfObj.length; index++) {
-        if (arrayOfObj[index][searchKey] == searchValue) {
-          return arrayOfObj[index][returnKey];
-        }
-      }
+    submitData: function () {
+      console.log("beginning transmission");
+      let finalData = {};
+      finalData["page_1"] = { cleaning_type: this.booking.cleaningType };
+      finalData["page_2"] = { postal_code: this.booking.postalCode };
+      finalData["page_3"] = {
+        cleaning_size: this.booking.houseOrBlock,
+        identities: Object.entries(this.booking.cleaningIdentitiesCounts).map(
+          (e) => ({
+            id: e[0],
+            count: e[1],
+          })
+        ),
+      };
+      finalData["page_4"] = {
+        cleaning_identities: this.booking.extraCleaningIdentities,
+      };
+      finalData["page_5"] = {
+        cleaning_types: this.booking.extraCleaningTypes.map((e) => {
+          return {
+            id: e,
+            children: this.booking.extraCleaningTypesCount[e]
+              ? Object.entries(this.booking.extraCleaningTypesCount[e]).map(
+                  (d) => ({
+                    id: d[0],
+                    count: d[1],
+                  })
+                )
+              : [],
+          };
+        }),
+      };
+      finalData["page_6"] = {
+        cleaning_types: this.booking.finalCleaningTypes.map((e) => {
+          return {
+            id: e,
+            child: {
+              id: this.booking.finalCleaningTypesIdentities[e],
+              count: this.booking.finalCleaningIdentitiesCount[e]
+                ? this.booking.finalCleaningIdentitiesCount[e][
+                    this.booking.finalCleaningTypesIdentities[e]
+                  ]
+                : null,
+            },
+          };
+        }),
+      };
+      console.log("----------");
+      console.log(finalData);
+      console.log("----------");
     },
     incrementPage: function () {
-      if (this.currentPage < this.pages.length)
+      if (this.currentPage + 1 < this.pages.length)
         this.$store.dispatch("incrementPage");
+      else {
+        console.log(this.booking);
+        this.submitData();
+      }
     },
     decrementPage: function () {
       if (this.currentPage > 0) this.$store.dispatch("decrementPage");
@@ -60,7 +103,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["currentPage"]),
+    ...mapGetters(["currentPage", "booking"]),
   },
 };
 </script>

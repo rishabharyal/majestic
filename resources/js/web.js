@@ -72,4 +72,9 @@ const CleaningTypesServices = {
     return Web.get("additional-services");
   }
 };
-export { CleaningServices, CleaningTypesServices };
+const BookingServices = {
+  save(data = {}) {
+    return Web.post('booking', data);
+  }
+};
+export { CleaningServices, CleaningTypesServices, BookingServices };
