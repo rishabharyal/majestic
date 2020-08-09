@@ -211,6 +211,7 @@
                               name="email"
                               class="mj-model-input"
                               placeholder="Email"
+                              v-model="loginData.name"
                               required
                             />
                           </div>
@@ -218,6 +219,7 @@
                             <input
                               type="Password"
                               name="password"
+                              v-model="loginData.password"
                               class="mj-model-input"
                               required
                               placeholder="Password"
@@ -227,6 +229,9 @@
                             <button type="submit" class="btn mg-btn-primary mj-modelbtn">Log In</button>
                           </div>
                         </div>
+                      </div>
+                      <div v-if="showLoginError">
+                        <strong ><strong>
                       </div>
                       <div class="mj-model-footer">
                         <div class="mj-pvc-p">
@@ -238,9 +243,6 @@
                         >
                           <a
                             href="#"
-                            data-dismiss="modal"
-                            data-toggle="modal"
-                            data-target="#signupmodel"
                           >
                             I
                             dont have account | Signup
@@ -268,6 +270,10 @@ export default {
     return {
       showLoginForm: false,
       showRegisterForm: false,
+      loginData: {
+        name: "",
+        password: "",
+      },
     };
   },
 };
