@@ -107,6 +107,8 @@ const actions = {
         return new Promise(async (resolve, reject) => {
             CleaningServices.query({ type_id: state.booking.cleaningType }).then((data) => {
                 data = data["data"];
+                console.log('yo')
+                console.log(data)
                 if (data['success']) {
                     context.commit('setCleaningIdentities', data["data"]["identities"]);
                     resolve(data['data']['identities']);

@@ -3,14 +3,16 @@
 </template>
 
 <script>
+import { BookingServices } from "../../web";
 import BookingOne from "./one";
 import BookingTwo from "./two";
 import BookingThree from "./three";
 import BookingFour from "./four";
 import BookingFive from "./five";
 import BookingSix from "./six";
-import BookingSeven from "./seven";
 import { mapGetters } from "vuex";
+
+import header from "../navbar";
 
 export default {
   components: {
@@ -20,7 +22,6 @@ export default {
     "booking-four": BookingFour,
     "booking-five": BookingFive,
     "booking-six": BookingSix,
-    "booking-seven": BookingSeven,
   },
   data: function () {
     return {
@@ -31,17 +32,15 @@ export default {
         "booking-four",
         "booking-five",
         "booking-six",
-        "booking-seven",
       ],
     };
   },
   methods: {
     submitData: function () {
-      console.log("beginning transmission");
-      let finalData = {};
-      finalData["page_1"] = { cleaning_type: this.booking.cleaningType };
-      finalData["page_2"] = { postal_code: this.booking.postalCode };
-      finalData["page_3"] = {
+      let booking = {};
+      booking["page_1"] = { cleaning_type: this.booking.cleaningType };
+      booking["page_2"] = { postal_code: this.booking.postalCode };
+      booking["page_3"] = {
         cleaning_size: this.booking.houseOrBlock,
         identities: Object.entries(this.booking.cleaningIdentitiesCounts).map(
           (e) => ({
@@ -50,10 +49,10 @@ export default {
           })
         ),
       };
-      finalData["page_4"] = {
+      booking["page_4"] = {
         cleaning_identities: this.booking.extraCleaningIdentities,
       };
-      finalData["page_5"] = {
+      booking["page_5"] = {
         cleaning_types: this.booking.extraCleaningTypes.map((e) => {
           return {
             id: e,
@@ -68,7 +67,7 @@ export default {
           };
         }),
       };
-      finalData["page_6"] = {
+      booking["page_6"] = {
         cleaning_types: this.booking.finalCleaningTypes.map((e) => {
           return {
             id: e,
@@ -83,15 +82,22 @@ export default {
           };
         }),
       };
-      console.log("----------");
-      console.log(finalData);
-      console.log("----------");
+
+      BookingServices.store(booking).then((data) => {
+        if (!data["success"]) {
+          this.$router.push("/login");
+        } else {
+          console.log("loggedIN");
+        }
+      });
     },
     incrementPage: function () {
+      console.log(this.currentPage);
+      console.log(this.pages.length);
       if (this.currentPage + 1 < this.pages.length)
         this.$store.dispatch("incrementPage");
       else {
-        console.log(this.booking);
+        console.log("Submitting dara");
         this.submitData();
       }
     },
@@ -110,7 +116,6 @@ export default {
   },
   created() {
     this.$store.dispatch("getCleaningTypes");
-    this.$store.dispatch("getCleaningIdentities");
     this.$store.dispatch("getCleaningTypeDescriptions");
     this.$store.dispatch("getExtraCleaningIdentities");
     this.$store.dispatch("getExtraCleaningTypes");

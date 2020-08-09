@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
 	return $request->user();
 });
+Route::post('login', 'AuthController@login');
+Route::post('register', 'AuthController@register');
 
 Route::namespace('Api')->group(static function () {
 	Route::get('cleaning-types', 'CleaningTypeController@index');
@@ -23,4 +25,5 @@ Route::namespace('Api')->group(static function () {
 	Route::get('cleanings', 'CleaningController@index');
 	Route::get('extra-identities', 'OrderWizardController@getExtraCleaningIdentities');
 	Route::get('extra-cleaning-types/{step_number}', 'OrderWizardController@getExtraCleaningTypes');
+	Route::post('booking', 'BookingController@store');
 });

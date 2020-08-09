@@ -163,19 +163,17 @@ export default {
     ...mapGetters(["cleaningIdentities", "booking"]),
   },
   created() {
-    if (this.cleaningIdentities.length == 0) {
-      this.$store.dispatch("getCleaningIdentities").then(() => {
-        this.cleaningIdentities.forEach((element) => {
-          this.roomCount[element.id] = 1;
-        });
+    this.$store.dispatch("getCleaningIdentities").then((e) => {
+      console.log("yes ecists");
+      this.cleaningIdentities.forEach((element) => {
+        this.roomCount[element.id] = 1;
       });
-      this.$store.dispatch("getCleaningTypeDescriptions");
-    }
-
-    if (this.booking.cleaningIdentitiesCounts) {
-      this.houseOrBlock = this.booking.houseOrBlock;
-      this.roomCount = this.booking.cleaningIdentitiesCounts;
-    }
+      if (this.booking.houseOrBlock) {
+        console.log("yes ecists");
+        this.houseOrBlock = this.booking.houseOrBlock;
+        this.roomCount = this.booking.cleaningIdentitiesCounts;
+      }
+    });
   },
 };
 </script>

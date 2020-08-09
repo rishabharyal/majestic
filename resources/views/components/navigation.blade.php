@@ -21,7 +21,7 @@
 						<li class="nav-item">
 							<a class="nav-link nav-link-a nav-cont dropdown-toggle" href="/services">Services</a>
 							<div class="Secondary-nav">
-								@foreach ($services as $service)
+								@foreach ($services ?? [] as $service)
 								<a class="dropdown-item" href="/services/{{ $service->slug }}">{{ $service->value }}</a>
 								@endforeach
 							</div>
@@ -38,7 +38,7 @@
 							</div>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link nav-link-a btn nav-btn" href="#">Book Online</a>
+						<a class="nav-link nav-link-a btn nav-btn" href="{{action('HomeController@showBookingPage')}}">Book Online</a>
 						</li>
 						@if(Auth::user())
 						<li class="nav-item">
@@ -100,20 +100,23 @@
 							<div class="mj-divder">
 								<div>OR </div>
 							</div>
-							<div class="mj-login-form">
-								<div class="row">
-									<div class="col-12">
-										<input type="email" name="email" class="mj-model-input" placeholder="Email">
-									</div>
-									<div class="col-12">
-										<input type="Password" name="password" class="mj-model-input"
-											placeholder="Password">
-									</div>
-									<div class="col-12">
-										<a href="#" class="btn mg-btn-primary mj-modelbtn">Log In</a>
+						<form action="{{action('Auth\LoginController@login')}}" method="post">
+							@csrf
+								<div class="mj-login-form">
+									<div class="row">
+										<div class="col-12">
+											<input type="email" name="email" class="mj-model-input" placeholder="Email" required>
+										</div>
+										<div class="col-12">
+											<input type="Password" name="password" class="mj-model-input" required
+												placeholder="Password">
+										</div>
+										<div class="col-12">
+											<button type="submit" class="btn mg-btn-primary mj-modelbtn">Log In</button>
+										</div>
 									</div>
 								</div>
-							</div>
+							</form>
 							<div class="mj-model-footer">
 								<div class="mj-pvc-p">
 									<a href="#" class="mj-fpanchor">Forgot Password?</a>
@@ -164,24 +167,28 @@
 								<div>OR </div>
 							</div>
 							<div class="mj-login-form">
+							<form action="{{action('Auth\RegisterController@register')}}" method="post">
+							@csrf
 								<div class="row">
 									<div class="col-12">
-										<input type="text" name="name" class="mj-model-input" placeholder="Name">
+										<input type="text" name="name" class="mj-model-input" required placeholder="Name">
 									</div>
 									<div class="col-12">
-										<input type="text" name="phone" class="mj-model-input" placeholder="Phone">
+										<input type="text" name="phone" class="mj-model-input" required placeholder="Phone">
 									</div>
 									<div class="col-12">
-										<input type="email" name="email" class="mj-model-input" placeholder="Email">
+										<input type="email" name="email" class="mj-model-input" required placeholder="Email">
 									</div>
 									<div class="col-12">
-										<input type="Password" name="password" class="mj-model-input"
+										<input type="Password" name="password" class="mj-model-input" required
 											placeholder="Password">
 									</div>
 									<div class="col-12">
-										<a href="#" class="btn mg-btn-primary mj-modelbtn">Sign Up</a>
+										<button type="submit" class="btn mg-btn-primary mj-modelbtn">Sign Up</button>
 									</div>
 								</div>
+
+							</form>
 							</div>
 							<div class="mj-model-footer">
 								<div class="mj-pvc-p">

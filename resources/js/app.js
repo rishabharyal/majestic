@@ -9,6 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 import Vuex from 'vuex'
 import booking from "./components/booking/booking.vue"
+import navbar from "./components/navbar.vue"
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ const app = new Vue({
     el: '#app',
     store: STORE,
     components: {
-        booking
+        booking,
+        navbar
     }
 });
 

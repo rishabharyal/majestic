@@ -73,7 +73,7 @@ const CleaningTypesServices = {
   },
 };
 const BookingServices = {
-  save(data = {}) {
+  store(data = {}) {
     return Web.post('booking', data);
   }
 };

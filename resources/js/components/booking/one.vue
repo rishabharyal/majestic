@@ -17,6 +17,7 @@
                   type="text"
                   name="service"
                   @input="search"
+                  @click="search"
                   v-model="searchQuery"
                   placeholder="What do you need help with?"
                   class="txtShowDiv"
@@ -126,9 +127,7 @@ export default {
     ...mapGetters(["cleaningTypes"]),
   },
   created() {
-    this.$store.dispatch("getCleaningTypes").then((d) => {
-      this.filteredCleaningTypes = this.cleaningTypes;
-    });
+    this.filteredCleaningTypes = this.cleaningTypes;
   },
 };
 </script>
