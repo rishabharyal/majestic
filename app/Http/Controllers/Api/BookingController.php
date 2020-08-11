@@ -12,6 +12,7 @@ class BookingController extends Controller
     {
         $request->session()->put('booking', $request->get('booking'));
         if (!Auth::user()) {
+            $request->session()->put('continue_to_checkout', true);
             return response()->json(
                 [
                     'success' => false,

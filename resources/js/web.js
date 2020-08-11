@@ -77,4 +77,12 @@ const BookingServices = {
     return Web.post('booking', data);
   }
 };
-export { CleaningServices, CleaningTypesServices, BookingServices };
+const AuthServices = {
+  login(data = {}) {
+    return Web.post('login', data);
+  },
+  register(data = {}) {
+    return Web.post('register', data);
+  }
+};
+export { CleaningServices, CleaningTypesServices, BookingServices, AuthServices };

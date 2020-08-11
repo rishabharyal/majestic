@@ -29,7 +29,7 @@
           <div
             class="collapse navbar-collapse"
             id="navbarNavDropdown"
-            v-if="!isLoggedIn || isLoggedIn == 'false'"
+            v-if="!loginStatus || loginStatus == 'false'"
           >
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
@@ -226,12 +226,18 @@
                             />
                           </div>
                           <div class="col-12">
-                            <button type="submit" class="btn mg-btn-primary mj-modelbtn">Log In</button>
+                            <button
+                              v-if="!isLoading"
+                              type="submit"
+                              @click="login"
+                              class="btn mg-btn-primary mj-modelbtn"
+                            >Log In</button>
+                            <button v-else class="btn mg-btn-secondary mj-modelbtn">Logging In...</button>
                           </div>
                         </div>
                       </div>
                       <div v-if="showLoginError">
-                        <strong ><strong>
+                        <strong style="color:red">The Email or Password doesnot match!</strong>
                       </div>
                       <div class="mj-model-footer">
                         <div class="mj-pvc-p">
@@ -241,9 +247,7 @@
                           class="mj-anchorfooter"
                           @click="showLoginForm=false;showRegisterForm=true"
                         >
-                          <a
-                            href="#"
-                          >
+                          <a href="#">
                             I
                             dont have account | Signup
                           </a>
@@ -261,20 +265,51 @@
   </section>
 </template>
 <script>
+import { AuthServices } from "../web";
 export default {
   props: ["isLoggedIn"],
   methods: {
-    login: function () {},
+    login: function () {
+      this.isLoading = true;
+      AuthServices.login({
+        username: this.loginData.name,
+        password: this.loginData.password,
+      })
+        .then((result) => {
+          console.log(result);
+          this.isLoading = false;
+          if (result["data"]["success"]) {
+            this.showLoginError = false;
+            this.showLoginForm = false;
+            this.loginStatus = true;
+          } else {
+            this.showLoginError = true;
+          }
+        })
+        .catch((e) => {
+          this.isLoading = false;
+          this.loginStatus = true;
+          this.showLoginError = true;
+        });
+    },
   },
   data: function () {
     return {
       showLoginForm: false,
       showRegisterForm: false,
+      showLoginError: false,
+      isLoading: false,
+      loginStatus: this.isLoggedIn,
       loginData: {
         name: "",
         password: "",
       },
     };
+  },
+  created() {
+    if (!this.loginStatus) {
+      this.showLoginForm = true;
+    }
   },
 };
 </script>

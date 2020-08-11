@@ -2,7 +2,7 @@
 
 @section('content')
 {{-- @dd(Auth::check()) --}}
-	<navbar is-logged-in="{{ json_encode(Auth::check()) }}"></navbar>
+	<navbar is-logged-in="{{ Auth::check() }}"></navbar>
 	<booking></booking>
 @stop
 
