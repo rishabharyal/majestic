@@ -10,6 +10,7 @@ import BookingThree from "./three";
 import BookingFour from "./four";
 import BookingFive from "./five";
 import BookingSix from "./six";
+import BookingSeven from "./seven";
 import { mapGetters } from "vuex";
 
 import header from "../navbar";
@@ -22,6 +23,7 @@ export default {
     "booking-four": BookingFour,
     "booking-five": BookingFive,
     "booking-six": BookingSix,
+    "booking-seven": BookingSeven,
   },
   data: function () {
     return {
@@ -32,6 +34,7 @@ export default {
         "booking-four",
         "booking-five",
         "booking-six",
+        "booking-seven",
       ],
     };
   },
@@ -83,13 +86,10 @@ export default {
         }),
       };
 
-      BookingServices.store(booking).then((data) => {
-        if (!data["success"]) {
-          this.$router.push("/login");
-        } else {
-          console.log("loggedIN");
-        }
-      });
+      // BookingServices.store(booking).then((data) => {
+        
+      // });
+      this.$store.dispatch('updateTotalPrice', 500);
     },
     incrementPage: function () {
       console.log(this.currentPage);

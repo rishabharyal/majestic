@@ -9,6 +9,7 @@ const state = {
     extraCleaningIdentities: [],
     extraCleaningTypes: [],
     finalCleaningTypes: [],
+    totalPrice: undefined,
     booking: {
         cleaningType: null,
         postalCode: null,
@@ -32,6 +33,9 @@ const state = {
 };
 
 const getters = {
+    totalPrice(state) {
+        return state.totalPrice;
+    },
     booking(state) {
         return state.booking;
     },
@@ -144,6 +148,9 @@ const actions = {
     updateUserBooking(context, updateData) {
         context.commit("updateUserBooking", updateData);
     },
+    updateTotalPrice(context, price) {
+        context.commit('updateTotalPrice', price);
+    },
     updateProgress(context, updateData) {
         context.commit("updateProgress", updateData);
     },
@@ -174,6 +181,9 @@ const mutations = {
     },
     setFinalCleaningTypes(state, data) {
         state.finalCleaningTypes = data;
+    },
+    updateTotalPrice(state, data) {
+        state.totalPrice = data;
     },
     updateUserBooking(state, data) {
         let temp = state.booking;

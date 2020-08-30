@@ -123,7 +123,7 @@
               </div>
               <div class="mg-float-right">
                 <a @click="handleSubmit" class="btn mg-btn-primary">
-                  Finish
+                  Next
                   <i class="fa fa-arrow-right"></i>
                 </a>
               </div>
@@ -182,6 +182,9 @@ export default {
         finalCleaningIdentitiesCount: this.finalCleaningIdentitiesCount,
         finalCleaningTypesIdentities: this.selectedFinalCleaningIdentities,
       });
+
+      // Set the order details into server, and get the price...
+
       let finalCleaningTypesName = [];
       this.selectedFinalCleaningTypes.forEach((element) => {
         let title = this.searchValueInObject(
