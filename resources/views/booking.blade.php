@@ -7,5 +7,5 @@
 @stop
 
 @section('scripts')
-	
+<script src="https://js.stripe.com/v3/"></script>
 @endsection

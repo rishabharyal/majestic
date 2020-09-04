@@ -9,7 +9,16 @@
                 <h3 class="mj-cst">Add Payment</h3>
               </div>
               <div>
-                <h3>Stripe Payment Here..</h3>
+                <div class="d-flex flex-column align-items-center">
+                  <h2 class="text-primary">{{msg}} {{payAmount}}</h2>
+                  <form id="payment-form" class="w-75 px-5 d-flex flex-column align-items-center" >
+                      <div ref="card" class="form-control m-2">
+                        <!-- A Stripe Element will be inserted here. -->
+                      </div>
+
+                       <button :disabled="lockSubmit" class="btn btn-primary shadow-sm" type="submit"  v-on:click.prevent="purchase">Submit</button> 
+                  </form>
+                </div>
               </div>
             </div>
             <Progress></Progress>
@@ -48,12 +57,51 @@ export default {
       selectedFinalCleaningTypes: [],
       selectedFinalCleaningIdentities: {},
       finalCleaningIdentitiesCount: {},
+      spk: "pk_test_51HLop7KqV8ZWOOg8GMX5WDAHS2sMgbaVGLJRezmgV1yeIARLXZt84sWN6aKcaWztvE1OJD4r6xGbw4SNMzWmR4xk00sqSkEL3d",
+      stripe: undefined,
+      card:undefined,
+      msg: 'Ammount', 
+      payAmmount:"$200",
+      lockSubmit:false,
+      // api:"majestic.test"
     };
   },
   components: {
     Progress,
   },
   methods: {
+    purchase() {
+      var self = this;
+      self.lockSubmit = true;
+
+      self.stripe.createToken(self.cardNumber).then((result)=> {
+        if(result.error){
+          alert(result.error.message);
+          self.$forceUpdate();
+          self.lockSubmit = false
+          return;
+        } else {
+          self.processTransaction(result.token.id);
+        }
+      })
+      .catch(err => {
+        alert("error: "+err.message);
+        self.lockSubmit=false;
+      })
+    },
+
+    processTransaction(transactionToken) {
+      var self = this;
+      dt = {
+        ammount: self.stripCurrency(self.payAmmount),
+        currency: "USD",
+        description: "Lets Gooo yeah!!",
+        token: transactionToken
+      }
+
+      // Post To API
+
+    },
     handleSubmit: function () {
       alert(this.totalPrice);
     },
@@ -63,5 +111,12 @@ export default {
   },
   created() {
   },
+
+  mounted() {
+    var self = this;
+    self.stripe = Stripe(self.spk);
+    self.card = self.stripe.elements().create('card');
+    self.card.mount(self.$refs.card);
+  }
 };
 </script>
