@@ -1,2 +1,2 @@
-const API_URL = 'http://majestic.test/api/';
+const API_URL = process.env.MIX_API_URL;
 export { API_URL };
